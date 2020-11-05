@@ -26,6 +26,7 @@
 #include <iostream>
 #include "../Commons/Epoll.h"
 #include "../Commons/TCPSocket.h"
+#include "TCPServer.h"
 // //
 #define PORT 10002
 #define TIMEOUT 1000
