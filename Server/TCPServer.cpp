@@ -92,22 +92,35 @@ void TCPServer::poll(){
         		memset( m_user_map[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
                      std::cout << "handling client" << "\n";
-            		//fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
-                    // process: read sizeof(int32_t) bytes first, if m_recvbuf < this value, error;
-                    // process: convert that much bytes to a messagehead class, get the length of consecutive message
-                    // process: read m_length bytes then. if OK, continue to read untill there are no bytes in buffer
-                    // process: if not enough bytes.
-                    // process:     1. if not reach the end of buffer, error
-                    // proecss:     2. if reached the end of buffer, holdon and wait for next incoming message. 
+                    int iMessageLength;
+                    Message iMessage;
+                    std::map<int32_t, User>::iterator iter;
+                    do{
+                        iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf);
+                        get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
+                        std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+                       
+    				    iter = m_user_map.begin();
+    				    while(iter != m_user_map.end()) {
+                            iMessage.set_to(iter->first);
+                        // set buffer empty
+                            memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
+                            int32_t iMessageLength = iMessage.ByteSizeLong();
+                        // construct header
+                            encode_int32(iter->second.m_sendbuf,iMessageLength );
+                            iMessage.SerializeToArray(iter->second.m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
+						    send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+            			    fprintf(stderr,"[server] send to: %d\n\n", iter->first);
+        				    iter++;
+    				    }
+
+                    }while(iMessageLength>0);
 
                     // get message length from buffer
-                    int iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf);
-                    std::cout << "message length from client is : " << iMessageLength << "\n";
+                    // int iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf);
+                    // std::cout << "message length from client is : " << iMessageLength << "\n";
                     // get message from buffer
-                    Message iMessage;
-                    get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
-                    std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
-
+                   
                     // create a Message class. from server, send to user id
                     // Message iMessage;
                     // iMessage.set_from(m_epoll_event->data.fd);
@@ -115,24 +128,7 @@ void TCPServer::poll(){
                     // iMessage.set_data(std::string(m_recvbuf));
 
                     // iterate over usermap, broadcast message.
-					std::map<int32_t, User>::iterator iter;
-    				iter = m_user_map.begin();
-    				while(iter != m_user_map.end()) {
-                        iMessage.set_to(iter->first);
-
-                        // set buffer empty
-                        memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
-
-                        int32_t iMessageLength = iMessage.ByteSizeLong();
-                        // construct header
-                        encode_int32(iter->second.m_sendbuf,iMessageLength );
-                        iMessage.SerializeToArray(iter->second.m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
-
-						send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
-
-            			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
-        				iter++;
-    				}
+		
 
     			}else{
 					// if recv returns 0, close the connection and unregister the user
