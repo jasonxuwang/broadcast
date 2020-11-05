@@ -81,7 +81,7 @@ void TCPClient::poll(){
                 
                 std::cout << "now buffer is: " <<  m_recvbuf << "\n";
                 // get message length from buffer
-                int iMessageLength = decode_int32(m_recvbuf));
+                int iMessageLength = decode_int32(m_recvbuf);
                 std::cout << "now messagelen is: " <<  iMessageLength << "\n";
 
                 // get message from buffer
