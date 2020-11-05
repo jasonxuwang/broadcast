@@ -128,7 +128,7 @@ void TCPServer::poll(){
                         encode_int32(m_sendbuf,iMessageLength );
                         iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
 
-						send(iter->first, m_sendbuf, m_sendbuf,iMessageLength + sizeof(int32_t), 0);
+						send(iter->first, m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
 
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
         				iter++;
