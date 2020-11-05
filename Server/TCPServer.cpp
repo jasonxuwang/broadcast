@@ -101,11 +101,11 @@ void TCPServer::poll(){
                     // proecss:     2. if reached the end of buffer, holdon and wait for next incoming message. 
 
                     // get message length from buffer
-                    int iMessageLength = decode_int32(m_recvbuf);
+                    int iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf);
                     std::cout << "message length from client is : " << iMessageLength << "\n";
                     // get message from buffer
                     Message iMessage;
-                    get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
+                    get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
 
                     // create a Message class. from server, send to user id
