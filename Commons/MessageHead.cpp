@@ -31,7 +31,7 @@ int32_t MessageHead::toBytes(char* to_buffer){
         if (sizeof(m_Length) < iRemainingLength){
             return -1;
         }
-        memcpy(to_buffer, m_Length, sizeof(m_Length));
+        memcpy(to_buffer, *m_Length, sizeof(m_Length));
         return sizeof(m_Length);
 }       
 
