@@ -1,6 +1,5 @@
 #include "MessageHead.h"
-#include <iostream>
-#include <cstring>
+
 int main(){
 
     MessageHead mh, mh2;
@@ -11,11 +10,9 @@ int main(){
         printf ("failed!");
     }
     
-
     printf("bytes are: %x", *buf);
 
-
-    // 
+// 
     mh2.toClass(buf, sizeof(int32_t));
     printf("m2 mlength now is: %d", mh2.m_Length);
     return 0;
@@ -29,8 +26,6 @@ MessageHead::MessageHead(){
 MessageHead::~MessageHead(){
     
 }
-
-
 
 int32_t MessageHead::toBytes(char* to_buffer){
         // convert the m_Length to its byte array presentation

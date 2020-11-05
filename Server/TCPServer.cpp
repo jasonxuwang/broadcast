@@ -67,8 +67,43 @@ void TCPServer::poll(){
            
         		memset( m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_recvbuf,BUFFSIZE,0) != 0) {
-            		fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
+            		//fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
 
+
+                    // process: read sizeof(int32_t) bytes first, if m_recvbuf < this value, error;
+                    // process: convert that much bytes to a messagehead class, get the length of consecutive message
+                    // process: read m_length bytes then. if OK, continue to read untill there are no bytes in buffer
+                    // process: if not enough bytes.
+                    // process:     1. if not reach the end of buffer, error
+                    // proecss:     2. if reached the end of buffer, holdon and wait for next incoming message. 
+
+                    // int iCurrent = 0;
+                    // if (strlen(m_recvbuf) < sizeof(int32_t)){
+                    //     // process: read sizeof(int32_t) bytes first, if m_recvbuf < this value, error;
+                    //     printf ("Error!");
+                    //     continue;
+                    // }
+                    // // process: convert that much bytes to a messagehead class, get the length of consecutive message
+                    // MessageHead iMessageHead;
+                    // iMessageHead.toClass(m_recvbuf+iCurrent, sizeof(int32_t));
+                    // iCurrent += sizeof(int32_t);
+
+                    // // read m_length bytes then. 
+                    // if (strlen(m_recvbuf)-iCurrent <iMessage.m_Length){
+                    //         // process: if not enough bytes.
+                    //         // process:     1. if not reach the end of buffer, error
+                    //         // proecss:     2. if reached the end of buffer, holdon and wait for next incoming message. 
+                    // }
+
+                    //if OK, create a message, process it and  continue to read untill there are no bytes in buffer
+                    
+
+                    // process
+                    // process
+                    // process
+                    // process
+                    // process
+                    // process
 
 
                     // create a Message class. from server, send to user id

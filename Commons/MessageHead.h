@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <cstring>
 #define BUFSIZE 1024
 
 class MessageHead{
