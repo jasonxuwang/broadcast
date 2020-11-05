@@ -83,7 +83,7 @@ void TCPServer::poll(){
     				while(iter != m_user_map.end()) {
                         iMessage.set_to(iter->first);
                         // set buffer 
-                        mymsg.SerializeToArray(m_recvbuf, mymsg.ByteSizeLong()); // TODO:caution overflow
+                        iMessage.SerializeToArray(m_recvbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
 
 						send(iter->first, m_recvbuf, strlen(m_recvbuf), 0);
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
