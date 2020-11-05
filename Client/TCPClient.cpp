@@ -72,6 +72,8 @@ void TCPClient::poll(){
                         Message iMessage;
                         iMessage.set_data(std::string(m_sendbuf));
                         iMessage.SerializeToArray(m_sendbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
+
+                        printf("[client] m_recvbuf now is : %s\n", m_recvbuf);
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 
