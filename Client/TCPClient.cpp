@@ -70,7 +70,7 @@ void TCPClient::poll(){
                 gets(m_sendbuf);
                 if (strlen(m_sendbuf) > 0 ){
                         Message iMessage;
-                        iMessage.set_data(string(m_sendbuf));
+                        iMessage.set_data(std::string(m_sendbuf));
                         iMessage.SerializeToArray(m_sendbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
