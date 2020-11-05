@@ -7,7 +7,7 @@ class MessageHead{
         MessageHead();
         ~MessageHead();
         // functions to convert a message head to an bytearray
-        int32_t toBytes(char* to_buffer, int32_t& outputLength);
+        int32_t toBytes(char* to_buffer);
         int32_t toClass(char* from_buffer, int32_t outputLength);
         int32_t m_Length;
     private:
