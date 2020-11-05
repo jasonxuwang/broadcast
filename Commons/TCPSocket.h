@@ -1,4 +1,6 @@
 
+#ifndef _TCPSOCKET_
+#define _TCPSOCKET_
 
 
 #include <stdint.h>
@@ -53,3 +55,5 @@ class TCPSocket{
     private:
 
 };
+
+#endif

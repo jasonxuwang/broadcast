@@ -1,4 +1,5 @@
-
+#ifndef _EPOLL_
+#define _EPOLL_
 
 
 #include <stdint.h>
@@ -52,3 +53,5 @@ class Epoll{
 
 
 };
+
+#endif
