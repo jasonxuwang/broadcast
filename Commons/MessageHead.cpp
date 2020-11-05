@@ -6,8 +6,10 @@ int main(){
     MessageHead mh;
     mh.m_Length = 10;
     int outlen = 0;
-    char buf[1024];
 
+    
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
     mh.toBytes(buf);
 
     printf("bytes are: %x",buf);
