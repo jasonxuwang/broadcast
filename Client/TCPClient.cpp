@@ -41,7 +41,7 @@ void TCPClient::poll(){
             }
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_sendbuf, '\0', BUFFSIZE);
-                gets(m_sendbuf);
+                fgets(m_sendbuf);
                 if (strlen(m_sendbuf) > 0 ){
                     send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
