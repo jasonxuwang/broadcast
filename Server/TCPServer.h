@@ -25,8 +25,8 @@
 #include <map>
 #include <iostream>
 // #include "message.pb.h"
-#include "../Commons/Epoll.h"
-#include "../Commons/TCPSocket.h"
+#include "Epoll.h"
+#include "TCPSocket.h"
 
 
 

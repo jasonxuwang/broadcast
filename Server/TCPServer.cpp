@@ -24,8 +24,8 @@
 #include <sys/epoll.h>
 #include <map>
 #include <iostream>
-#include "../Commons/Epoll.h"
-#include "../Commons/TCPSocket.h"
+#include "Epoll.h"
+#include "TCPSocket.h"
 // //
 #define PORT 10002
 #define TIMEOUT 1000

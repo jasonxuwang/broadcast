@@ -1,4 +1,4 @@
-#include "./Server/TCPServer.h"
+#include "TCPServer.h"
 
 int main(){
 
