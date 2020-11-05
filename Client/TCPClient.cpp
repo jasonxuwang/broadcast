@@ -102,6 +102,8 @@ void TCPClient::poll(){
                 memset(m_recvbuf, '\0', BUFFSIZE);
                 gets(m_recvbuf);
                 if (strlen(m_recvbuf) > 0 ){
+
+                        // tes
                         std::cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
                         Message iMessage;
                         iMessage.set_data(std::string(m_recvbuf));
@@ -114,9 +116,9 @@ void TCPClient::poll(){
                         std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         
                         // construct header
-                        char *temp;
-                        encode_int32(&temp,(uint32_t)(iMessageLength));
-                        memcpy(m_sendbuf, temp, sizeof(temp));
+                        std::string s = std::to_string(iMessageLength);
+                        char const *pchar = s.c_str();
+                        memcpy(m_sendbuf, pchar, sizeof(pchar));
                         printf("first bytes of buffer now is set to %s", m_sendbuf);
 
 
@@ -125,7 +127,7 @@ void TCPClient::poll(){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf+4 now is :" << m_sendbuf+sizeof(int32_t) << std::endl ;
+                        std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf now is :" << m_sendbuf << std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 
