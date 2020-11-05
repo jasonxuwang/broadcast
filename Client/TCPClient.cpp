@@ -121,6 +121,7 @@ void TCPClient::poll(){
                         bytes[1] = (n>>16) & 0xFF;
                         bytes[2] = (n>>8) & 0xFF;
                         bytes[3] = (n) & 0xFF;
+                        printf("first four bytes of buffer now is set to %x %x %x %x \n", bytes[0],bytes[1],bytes[2],bytes[3]);
                         memcpy(m_sendbuf, bytes, sizeof(bytes));
                         printf("first bytes of buffer now is set to %s \n", m_sendbuf);
 
