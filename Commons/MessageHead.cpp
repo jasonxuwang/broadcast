@@ -5,12 +5,12 @@ int main(){
 
     MessageHead mh;
     mh.m_Length = 10;
-    int buflen = [1];
-    char test[100];
-    memcpy(test, buflen, sizeof(buflen));
-    mh.toBytes(test, buflen);
+    int outlen = 0;
+    char* buf[1024];
 
-    std::cout << "int bytes are :" <<test << std::endl;
+    mh.toBytes(buf, &outlen);
+
+    printf("bytes are: %x",buf);
     return 0;
 }
 
@@ -29,24 +29,18 @@ int32_t MessageHead::toBytes(char* to_buffer, int32_t& outputLength){
         if (outputLength < sizeof(int32_t) ){
             return -1;
         }
-
-
-
-                
-        char* a_begin = reinterpret_cast<char*>(m_Length);
-        char* a_end = a_begin +4;
-        copy(a_begin,a_end, back_inserter(chars));
-        std::cout <<converted << "is converted! \n";
-        std::copy(converted, converted+sizeof(converted), to_buffer);
+        // convert the m_Length to its byte array presentation
+        memcpy(to_buffer, m_Length, sizeof(m_Length));
         outputLength -= sizeof(converted);
         
         return 0;
-}
+}       
 
 int32_t MessageHead::toClass(char* from_buffer, int32_t outputLength){
     if (outputLength < sizeof(int32_t) ){
             return -1;
     }
+
     memcpy(&m_Length, from_buffer, sizeof(int32_t));
     return 0;
 }
