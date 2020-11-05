@@ -5,8 +5,9 @@ int main(){
 
     MessageHead mh;
     mh.m_Length = 10;
-    int buflen = 100;
+    int buflen = [1];
     char test[100];
+    memcpy(test, buflen, sizeof(buflen));
     mh.toBytes(test, buflen);
 
     std::cout << "int bytes are :" <<test << std::endl;

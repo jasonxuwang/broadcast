@@ -64,7 +64,7 @@ void TCPClient::poll(){
         // if user input, read it into buffer and send to server.
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_sendbuf, '\0', BUFFSIZE);
-                fgets(m_sendbuf);
+                gets(m_sendbuf);
                 if (strlen(m_sendbuf) > 0 ){
                     send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
