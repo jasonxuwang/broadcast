@@ -62,6 +62,12 @@ int32_t TCPSocket::as_server(int32_t port){
     return m_socket_fd;
 }
 
+void TCPSocket::clear_buff(char* iBuff){
+    memset(iBuff, '\0', BUFFSIZE );
+
+}
+
+
 int32_t TCPSocket::accept_conn(){
     return  accept(m_socket_fd, (struct sockaddr *) &m_client_addr, (socklen_t*) &addrlen);
 

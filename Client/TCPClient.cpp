@@ -107,7 +107,6 @@ void TCPClient::poll(){
                         iMessage.set_to(-1);
                         iMessage.set_from(2);
 
-
                         // get the length of message
                         int32_t iMessageLength = iMessage.ByteSizeLong();
                         std::cout << "2 message len is: " <<  iMessageLength << "\n";

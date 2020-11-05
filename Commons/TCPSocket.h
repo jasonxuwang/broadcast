@@ -49,10 +49,14 @@ class TCPSocket{
         int32_t as_client(char* ipstr,int32_t port);
         int32_t get_socket_fd();
         // wrapper for socket functions
-
+        void clear_buff(char* iBuff);
         int32_t accept_conn();
+
+        char m_recvbuf[BUFFSIZE];
+        char m_sendbuf[BUFFSIZE];
         
     private:
+        
 
 };
 

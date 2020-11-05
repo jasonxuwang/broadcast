@@ -33,6 +33,8 @@
 
 struct User{
 	int32_t id;
+    char m_sendbuf[BUFFSIZE];
+    char m_recvbuf[BUFFSIZE];
 };
 
 

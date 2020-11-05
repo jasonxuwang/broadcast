@@ -76,7 +76,7 @@ void TCPServer::poll(){
 				std::cout << "new client connected ! \n";
 
 				// store client fd to user map
-				User new_user = {0};
+				User new_user;
 				new_user.id = conn_sock;
 				m_user_map[conn_sock] = new_user;
 				
@@ -89,8 +89,8 @@ void TCPServer::poll(){
         
 		// if this is an incoming message from esiting connection
 		}else{
-        		memset( m_recvbuf, '\0', BUFFSIZE );
-				if ( recv(m_epoll_event->data.fd, m_recvbuf,BUFFSIZE,0) != 0) {
+        		memset( m_user_map[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE );
+				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
                      std::cout << "handling client" << "\n";
             		//fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
                     // process: read sizeof(int32_t) bytes first, if m_recvbuf < this value, error;
@@ -121,14 +121,14 @@ void TCPServer::poll(){
                         iMessage.set_to(iter->first);
 
                         // set buffer empty
-                        memset( m_sendbuf, '\0', BUFFSIZE );
+                        memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
 
                         int32_t iMessageLength = iMessage.ByteSizeLong();
                         // construct header
-                        encode_int32(m_sendbuf,iMessageLength );
-                        iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
+                        encode_int32(iter->second.m_sendbuf,iMessageLength );
+                        iMessage.SerializeToArray(iter->second.m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
 
-						send(iter->first, m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+						send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
 
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
         				iter++;
