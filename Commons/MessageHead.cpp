@@ -6,7 +6,7 @@ int main(){
     MessageHead mh;
     mh.m_Length = 10;
     int outlen = 0;
-    char* buf[1024];
+    char buf[1024];
 
     mh.toBytes(buf);
 
