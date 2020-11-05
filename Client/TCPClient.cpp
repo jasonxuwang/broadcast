@@ -92,19 +92,6 @@ void TCPClient::poll(){
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                 }
                 while (iMessageLength > 0);
-
-                // std::cout << "now buffer is: " <<  m_recvbuf << "\n";
-                // get message length from buffer
-                //int iMessageLength = decode_int32(m_recvbuf);
-                //std::cout << "now messagelen is: " <<  iMessageLength << "\n";
-                // get message from buffer
-              
-               
-                //std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
-
-                // Message iMessage;
-                // iMessage.ParseFromArray(m_recvbuf, strlen(m_recvbuf));
-                // std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
             }
 
         // if user input, read it into buffer and send to server.
@@ -131,7 +118,7 @@ void TCPClient::poll(){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        memcpy(m_sendbuf+iMessageLength + sizeof(int32_t) , m_sendbuf, iMessageLength + sizeof(int32_t));
+                        //memcpy(m_sendbuf+iMessageLength + sizeof(int32_t) , m_sendbuf, iMessageLength + sizeof(int32_t));
 
                         std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
