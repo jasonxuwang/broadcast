@@ -114,7 +114,7 @@ void TCPClient::poll(){
                         std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         
                         // construct header
-                        encode_int32(*m_sendbuf,iMessageLength );
+                        encode_int32(&m_sendbuf,(uint32_t*)(&iMessageLength) );
                         printf("first bytes of buffer now is set to %s", m_sendbuf);
 
 
