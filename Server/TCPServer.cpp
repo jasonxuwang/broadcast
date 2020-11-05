@@ -91,12 +91,14 @@ void TCPServer::poll(){
 		}else{
         		memset( m_user_map[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
+
                      std::cout << "handling client" << "\n";
                     int32_t iMessageLength;
                     Message iMessage;
                     std::map<int32_t, User>::iterator iter;
                     int32_t offset = 0;
                     do{
+                        std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd ;
                         iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset);
                         get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
                         std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
