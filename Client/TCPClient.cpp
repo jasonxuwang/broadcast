@@ -47,7 +47,7 @@ void TCPClient::poll(){
                 }
 
         }else{
-            return -1;
+            return;
         }
 
     }
