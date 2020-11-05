@@ -58,10 +58,22 @@ void TCPClient::poll(){
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-                 // get message from buffer
+
+                 // get message length from buffer
+                int iMessageHeaderLength =  sizeof(int32_t);
+                int iMessageLength = get_message_len(m_recvbuf,iMessageHeaderLength);
+                if (iMessageLength < 0){
+                    continue;
+                }
+
+                // get message from buffer
                 Message iMessage;
-                iMessage.ParseFromArray(m_recvbuf, strlen(m_recvbuf));
+                get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, *iMessage );
                 std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+
+                // Message iMessage;
+                // iMessage.ParseFromArray(m_recvbuf, strlen(m_recvbuf));
+                // std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
             }
 
         // if user input, read it into buffer and send to server.
@@ -71,9 +83,22 @@ void TCPClient::poll(){
                 if (strlen(m_sendbuf) > 0 ){
                         Message iMessage;
                         iMessage.set_data(std::string(m_sendbuf));
-                        iMessage.SerializeToArray(m_sendbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
 
-                        printf("[client] m_recvbuf now is : %s\n", m_recvbuf);
+                        // get the length of message
+                        int32_t iMessageLength = iMessage.ByteSizeLong();
+                        
+                        // construct header
+                        MessageHead iMessageHead;
+                        iMessageHead.m_Length =  iMessageLength;
+
+                        // add header byte 
+                        if (strlen(m_sendbuf) < 0){
+                            continue;
+                        }
+                        int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
+                        iMessage.SerializeToArray(m_sendbuf+iMessageHeadLength, iMessage.ByteSizeLong()); // TODO:caution overflow
+
+                        //printf("[client] m_recvbuf now is : %s\n", m_recvbuf);
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 

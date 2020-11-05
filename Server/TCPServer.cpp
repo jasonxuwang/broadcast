@@ -1,4 +1,5 @@
 #include "TCPServer.h"
+
 // //
 #define PORT 10003
 #define TIMEOUT 1000
@@ -37,6 +38,8 @@ void TCPServer::run(){
 }
 
 
+
+
 /* single query events from epoll */
 void TCPServer::poll(){
     int numfd = m_epoll.wait();
@@ -65,12 +68,9 @@ void TCPServer::poll(){
         
 		// if this is an incoming message from esiting connection
 		}else{
-           
         		memset( m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_recvbuf,BUFFSIZE,0) != 0) {
             		//fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
-
-
                     // process: read sizeof(int32_t) bytes first, if m_recvbuf < this value, error;
                     // process: convert that much bytes to a messagehead class, get the length of consecutive message
                     // process: read m_length bytes then. if OK, continue to read untill there are no bytes in buffer
@@ -78,55 +78,53 @@ void TCPServer::poll(){
                     // process:     1. if not reach the end of buffer, error
                     // proecss:     2. if reached the end of buffer, holdon and wait for next incoming message. 
 
-                    // int iCurrent = 0;
-                    // if (strlen(m_recvbuf) < sizeof(int32_t)){
-                    //     // process: read sizeof(int32_t) bytes first, if m_recvbuf < this value, error;
-                    //     printf ("Error!");
-                    //     continue;
-                    // }
-                    // // process: convert that much bytes to a messagehead class, get the length of consecutive message
-                    // MessageHead iMessageHead;
-                    // iMessageHead.toClass(m_recvbuf+iCurrent, sizeof(int32_t));
-                    // iCurrent += sizeof(int32_t);
+                    // get message length from buffer
+                    int iMessageHeaderLength =  sizeof(int32_t);
+                    int iMessageLength = get_message_len(m_recvbuf,iMessageHeaderLength);
+                    if (iMessageLength < 0){
+                        continue;
+                    }
 
-                    // // read m_length bytes then. 
-                    // if (strlen(m_recvbuf)-iCurrent <iMessage.m_Length){
-                    //         // process: if not enough bytes.
-                    //         // process:     1. if not reach the end of buffer, error
-                    //         // proecss:     2. if reached the end of buffer, holdon and wait for next incoming message. 
-                    // }
-
-                    //if OK, create a message, process it and  continue to read untill there are no bytes in buffer
-                    
-
-                    // process
-                    // process
-                    // process
-                    // process
-                    // process
-                    // process
-
+                    // get message from buffer
+                    Message iMessage;
+                    get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, *iMessage );
+                    std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
 
                     // create a Message class. from server, send to user id
-                    Message iMessage;
-                    iMessage.set_from(m_epoll_event->data.fd);
-                    // iMessage.set_to();
-                    iMessage.set_data(std::string(m_recvbuf));
+                    // Message iMessage;
+                    // iMessage.set_from(m_epoll_event->data.fd);
+                    // // iMessage.set_to();
+                    // iMessage.set_data(std::string(m_recvbuf));
 
                     // iterate over usermap, broadcast message.
 					std::map<int32_t, User>::iterator iter;
     				iter = m_user_map.begin();
     				while(iter != m_user_map.end()) {
                         iMessage.set_to(iter->first);
-                        // set buffer 
-                        iMessage.SerializeToArray(m_recvbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
 
-						send(iter->first, m_recvbuf, strlen(m_recvbuf), 0);
+                        // set buffer empty
+                        memset( m_sendbuf, '\0', BUFFSIZE );
+
+                        int32_t iMessageLength = iMessage.ByteSizeLong();
+                        // construct header
+                        MessageHead iMessageHead;
+                        iMessageHead.m_Length = iMessageLength;
+
+                        // add header byte 
+                        if (strlen(m_sendbuf) < 0){
+                            continue;
+                        }
+                        int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
+                        iMessage.SerializeToArray(m_sendbuf+iMessageHeadLength, iMessage.ByteSizeLong()); // TODO:caution overflow
+
+
+                        // iMessage.SerializeToArray(m_recvbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
+						send(iter->first, m_sendbuf, strlen(m_sendbuf), 0);
+
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
         				iter++;
     				}
 
-            		
     			}else{
 					// if recv returns 0, close the connection and unregister the user
 					m_epoll.epoll_close(m_epoll_event->data.fd); //?

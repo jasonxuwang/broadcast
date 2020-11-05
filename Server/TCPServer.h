@@ -29,6 +29,7 @@
 #include "../Commons/TCPSocket.h"
 #include "../Protobuf/message.pb.h"
 #include "../Commons/MessageHead.h"
+#include "../Commons/utils.h"
 
 #define BUFSIZE 1024
 
@@ -46,6 +47,7 @@ class TCPServer{
         void run();
         void init();
         void poll();
+        int32_t get_message(char* iBuffer, int32_t offset);
     private:
 
 
