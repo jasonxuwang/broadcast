@@ -125,6 +125,14 @@ void TCPClient::poll(){
                         memcpy(m_sendbuf, bytes, sizeof(bytes));
                         printf("first bytes of buffer now is set to %s \n", m_sendbuf);
 
+                        // get numbers
+                        int num = 0;
+                        for (int i=0;i<4;i++){
+                            num<<8;
+                            num |= m_sendbuf[i];
+                        }
+                        printf("number from bytes  %d \n", num);
+
 
                         // add header byte 
                         if (!iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()) ){
