@@ -29,6 +29,7 @@ MessageHead::~MessageHead(){
 
 int32_t MessageHead::toBytes(char* to_buffer){
         // convert the m_Length to its byte array presentation
+        printf("m_length is : %d",m_Length);
         int32_t iRemainingLength = sizeof(to_buffer) - strlen(to_buffer);
         if (sizeof(m_Length) < iRemainingLength){
             return -1;
