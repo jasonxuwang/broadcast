@@ -116,10 +116,13 @@ void TCPClient::poll(){
                         std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         
                         // construct header
-                        std::string s = std::to_string(iMessageLength);
-                        char const *pchar = s.c_str();
-                        memcpy(m_sendbuf, pchar, sizeof(pchar));
-                        printf("first bytes of buffer now is set to %s", m_sendbuf);
+                        char bytes[4];
+                        bytes[0] = (n>>24) & 0xFF;
+                        bytes[1] = (n>>16) & 0xFF;
+                        bytes[2] = (n>>8) & 0xFF;
+                        bytes[3] = (n) & 0xFF;
+                        memcpy(m_sendbuf, bytes, sizeof(pchar));
+                        printf("first bytes of buffer now is set to %s \n", m_sendbuf);
 
 
                         // add header byte 
