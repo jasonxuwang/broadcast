@@ -68,7 +68,7 @@ void TCPClient::poll(){
 
                 // get message from buffer
                 Message iMessage;
-                get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, *iMessage );
+                get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, iMessage* );
                 std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
 
                 // Message iMessage;
