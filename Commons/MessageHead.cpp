@@ -8,7 +8,6 @@ MessageHead::MessageHead(){
 MessageHead::~MessageHead(){
     
 }
-g++ testServer.cpp ./Commons/utils.cpp ./Server/TCPServer.cpp ./Commons/Epoll.cpp ./Commons/TCPSocket.cpp ./Protobuf/message.pb.cc ./Commons/MessageHead.cpp -o server -std=c++11 `pkg-config --cflags --libs protobuf`
 
 
 int32_t MessageHead::toBytes(char* to_buffer){
