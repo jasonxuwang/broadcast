@@ -51,9 +51,6 @@ class TCPSocket{
         // wrapper for socket functions
         void clear_buff(char* iBuff);
         int32_t accept_conn();
-
-        char m_recvbuf[BUFFSIZE];
-        char m_sendbuf[BUFFSIZE];
         
     private:
         

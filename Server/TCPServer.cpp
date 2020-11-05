@@ -121,14 +121,14 @@ void TCPServer::poll(){
                         iMessage.set_to(iter->first);
 
                         // set buffer empty
-                        memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
+                        memset( iter->second->m_sendbuf, '\0', BUFFSIZE );
 
                         int32_t iMessageLength = iMessage.ByteSizeLong();
                         // construct header
-                        encode_int32(iter->second.m_sendbuf,iMessageLength );
-                        iMessage.SerializeToArray(iter->second.m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
+                        encode_int32(iter->second->m_sendbuf,iMessageLength );
+                        iMessage.SerializeToArray(iter->second->m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
 
-						send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+						send(iter->first, iter->second->m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
 
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
         				iter++;
