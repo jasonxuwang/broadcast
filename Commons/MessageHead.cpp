@@ -8,7 +8,7 @@ int main(){
     int outlen = 0;
     char* buf[1024];
 
-    mh.toBytes(buf, &outlen);
+    mh.toBytes(buf);
 
     printf("bytes are: %x",buf);
     return 0;
