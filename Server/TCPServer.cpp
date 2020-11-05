@@ -24,14 +24,12 @@
 #include <sys/epoll.h>
 #include <map>
 #include <iostream>
-#include "../Commons/Epoll.h"
-#include "../Commons/TCPSocket.h"
 #include "TCPServer.h"
 // //
 #define PORT 10002
 #define TIMEOUT 1000
 #define MAXEVENT 100
-
+#define BUFFSIZE 1024
 
 
 
@@ -80,9 +78,9 @@ void TCPServer::poll(){
 			// if incoming message	
 		}else{
            
-        		memset( m_recvbuf, '\0', BUFFSIZ );
+        		memset( m_recvbuf, '\0', BUFFSIZE );
 
-				if ( recv(m_epoll_event->data.fd, m_recvbuf,BUFSIZ,0) != 0) {
+				if ( recv(m_epoll_event->data.fd, m_recvbuf,BUFFSIZE,0) != 0) {
 					if (!strcmp(m_recvbuf, "exit")) break;
             		fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
 
