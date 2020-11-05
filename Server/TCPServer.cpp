@@ -21,7 +21,7 @@ int32_t decode_int32(char *iBuff) {
     int num = 0;
     for (int i=0;i<4;i++){
         num<<8;
-        num |= m_sendbuf[i];
+        num |= iBuff[i];
     }
     return num;
 }
@@ -101,6 +101,7 @@ void TCPServer::poll(){
 
                     // get message length from buffer
                     int iMessageLength = decode_int32(m_recvbuf);
+                    std::cout
                     // get message from buffer
                     Message iMessage;
                     get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
@@ -123,7 +124,7 @@ void TCPServer::poll(){
 
                         int32_t iMessageLength = iMessage.ByteSizeLong();
                         // construct header
-                        encode_int32(m_sendbuf,iMessageLength )
+                        encode_int32(m_sendbuf,iMessageLength );
                         iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
 
 						send(iter->first, m_sendbuf, strlen(m_sendbuf), 0);
