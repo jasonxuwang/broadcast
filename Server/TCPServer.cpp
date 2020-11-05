@@ -91,6 +91,7 @@ void TCPServer::poll(){
 		}else{
         		memset( m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_recvbuf,BUFFSIZE,0) != 0) {
+                     std::cout << "handling client" << "\n";
             		//fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
                     // process: read sizeof(int32_t) bytes first, if m_recvbuf < this value, error;
                     // process: convert that much bytes to a messagehead class, get the length of consecutive message
