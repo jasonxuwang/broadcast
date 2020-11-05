@@ -69,6 +69,15 @@ void TCPServer::poll(){
 				if ( recv(m_epoll_event->data.fd, m_recvbuf,BUFFSIZE,0) != 0) {
             		fprintf(stderr,"[server] recv msg: %s\n", m_recvbuf);
 
+
+
+                    // create a Message class. from server, send to user id
+                    // Message iMessage;
+                    // iMessage.set_from(-1);
+                    // // iMessage.set_to();
+                    // iMessage.set_data();
+
+
                     // iterate over usermap, broadcast message.
 					std::map<int32_t, User>::iterator iter;
     				iter = m_user_map.begin();
@@ -77,6 +86,7 @@ void TCPServer::poll(){
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
         				iter++;
     				}
+
             		
     			}else{
 					// if recv returns 0, close the connection and unregister the user

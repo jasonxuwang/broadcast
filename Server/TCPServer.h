@@ -27,8 +27,7 @@
 // #include "message.pb.h"
 #include "../Commons/Epoll.h"
 #include "../Commons/TCPSocket.h"
-
-
+#include "../Protobuf/message.pb.h"
 
 #define BUFSIZE 1024
 

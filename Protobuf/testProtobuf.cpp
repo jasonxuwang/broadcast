@@ -6,7 +6,8 @@ int main(){
     Message mymsg;
     mymsg.set_from(0);
     mymsg.set_to(1);
-    std::string str = "hello world!";
+    const char* charstr=  "hello world!";
+    std::string str(charstr);
     mymsg.set_data(str);
 
 
