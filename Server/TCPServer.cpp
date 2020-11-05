@@ -87,7 +87,7 @@ void TCPServer::poll(){
 
                     // get message from buffer
                     Message iMessage;
-                    get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, iMessage* );
+                    get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, &iMessage );
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
 
                     // create a Message class. from server, send to user id
