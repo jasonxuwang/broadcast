@@ -78,11 +78,12 @@ void TCPClient::poll(){
 
         // if user input, read it into buffer and send to server.
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
+                memset(m_recvbuf, '\0', BUFFSIZE);
                 memset(m_sendbuf, '\0', BUFFSIZE);
-                gets(m_sendbuf);
-                if (strlen(m_sendbuf) > 0 ){
+                gets(m_recvbuf);
+                if (strlen(m_recvbuf) > 0 ){
                         Message iMessage;
-                        iMessage.set_data(std::string(m_sendbuf));
+                        iMessage.set_data(std::string(m_recvbuf));
 
                         // get the length of message
                         int32_t iMessageLength = iMessage.ByteSizeLong();
@@ -92,9 +93,6 @@ void TCPClient::poll(){
                         iMessageHead.m_Length =  iMessageLength;
 
                         // add header byte 
-                        if (strlen(m_sendbuf) < 0){
-                            continue;
-                        }
                         int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
                         iMessage.SerializeToArray(m_sendbuf+iMessageHeadLength, iMessage.ByteSizeLong()); // TODO:caution overflow
 
