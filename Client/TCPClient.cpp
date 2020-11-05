@@ -104,7 +104,7 @@ void TCPClient::poll(){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf now is :" << m_sendbuf << std::endl ;
+                        std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf+4 now is :" << m_sendbuf+sizeof(int32_t) << std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 
