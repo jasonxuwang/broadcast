@@ -25,8 +25,6 @@
 #include <map>
 #include <iostream>
 // #include "message.pb.h"
-#include "../Commons/Epoll.h"
-#include "../Commons/TCPSocket.h"
 #include "../Protobuf/message.pb.h"
 #include "../Commons/MessageHead.h"
 #include "../Commons/utils.h"
@@ -47,7 +45,6 @@ class TCPServer{
         void run();
         void init();
         void poll();
-        int32_t get_message(char* iBuffer, int32_t offset);
     private:
 
 
