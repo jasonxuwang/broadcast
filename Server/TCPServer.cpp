@@ -1,7 +1,7 @@
 #include "TCPServer.h"
 
 // //
-#define PORT 10006
+#define PORT 10007
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024
