@@ -7,7 +7,9 @@ int main(){
     mymsg.set_from(0);
     mymsg.set_to(1);
     const char* charstr=  "hello world!";
-    std::string str(charstr);
+    char* charstr2;
+    memcpy(charstr2, charstr, 5);
+    std::string str(charstr2);
     mymsg.set_data(str);
 
 
