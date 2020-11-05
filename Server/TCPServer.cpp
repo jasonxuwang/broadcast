@@ -100,6 +100,11 @@ void TCPServer::poll(){
                     do{
                         //std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd ;
                         iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset);
+
+                        if (iMessageLength <= 0){
+                            break;
+                        }
+                        
                         get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
                         std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                         offset +=iMessageLength;
