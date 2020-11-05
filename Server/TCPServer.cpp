@@ -73,15 +73,19 @@ void TCPServer::poll(){
 
                     // create a Message class. from server, send to user id
                     // Message iMessage;
-                    // iMessage.set_from(-1);
-                    // // iMessage.set_to();
-                    // iMessage.set_data();
+                    iMessage.set_from(-1);
+                    // iMessage.set_to();
+                    iMessage.set_data(string(m_recvbuf));
 
 
                     // iterate over usermap, broadcast message.
 					std::map<int32_t, User>::iterator iter;
     				iter = m_user_map.begin();
     				while(iter != m_user_map.end()) {
+                        iMessage.set_to(iter->first);
+                        // set buffer 
+                        mymsg.SerializeToArray(m_recvbuf, mymsg.ByteSizeLong()); // TODO:caution overflow
+
 						send(iter->first, m_recvbuf, strlen(m_recvbuf), 0);
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
         				iter++;

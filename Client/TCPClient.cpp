@@ -58,7 +58,10 @@ void TCPClient::poll(){
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-                std::cout << "[client] recv: " << m_recvbuf << "\n";
+                 // get message from buffer
+                Message iMessage;
+                iMessage.ParseFromArray(m_recvbuf, strlen(m_recvbuf));
+                std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
             }
 
         // if user input, read it into buffer and send to server.
@@ -66,7 +69,10 @@ void TCPClient::poll(){
                 memset(m_sendbuf, '\0', BUFFSIZE);
                 gets(m_sendbuf);
                 if (strlen(m_sendbuf) > 0 ){
-                    send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
+                        Message iMessage;
+                        iMessage.set_data(string(m_sendbuf));
+                        iMessage.SerializeToArray(m_sendbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 
         }else{
