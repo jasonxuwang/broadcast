@@ -1,4 +1,5 @@
 #include "message.pb.h"
+#include <string>
 
 int main(){
     Message mymsg;
