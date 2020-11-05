@@ -14,6 +14,7 @@ int32_t MessageHead::toBytes(char* to_buffer){
         // convert the m_Length to its byte array presentation
         //printf("m_length is : %d",m_Length);
         memcpy(to_buffer, &m_Length, sizeof(m_Length));
+        printf("buffis: %s", to_buffer);
         return sizeof(m_Length);
 }       
 
