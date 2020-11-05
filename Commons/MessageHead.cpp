@@ -1,23 +1,5 @@
 #include "MessageHead.h"
 
-int main(){
-
-    MessageHead mh, mh2;
-    mh.m_Length = 10;
-    char buf[1024];
-    memset(buf, 0, sizeof(buf));
-    if ( mh.toBytes(buf) ==-1){
-        printf ("failed!");
-    }
-    
-    printf("bytes are: %x", *buf);
-
-// 
-    mh2.toClass(buf, sizeof(int32_t));
-    printf("m2 mlength now is: %d", mh2.m_Length);
-    return 0;
-}
-
 
 MessageHead::MessageHead(){
 
