@@ -60,14 +60,14 @@ void TCPClient::poll(){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
 
-                printf("now buffer is: %s", m_recvbuf);
+                cout << "now buffer is: " <<  m_recvbuf << "\n";
                  // get message length from buffer
                 int iMessageHeaderLength =  sizeof(int32_t);
                 int iMessageLength = get_message_len(m_recvbuf,iMessageHeaderLength);
                 if (iMessageLength < 0){
                     continue;
                 }
-                printf("message length is: %s", iMessageLength);
+                cout << "now messagelen is: " <<  iMessageLength << "\n";
 
                 // get message from buffer
                 Message iMessage;
@@ -82,23 +82,24 @@ void TCPClient::poll(){
         // if user input, read it into buffer and send to server.
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_recvbuf, '\0', BUFFSIZE);
-                memset(m_sendbuf, '\0', BUFFSIZE);
+                
                 gets(m_recvbuf);
                 
                 if (strlen(m_recvbuf) > 0 ){
-                        printf("2 now recvbuf is: %s", m_recvbuf);
+                        cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
                         Message iMessage;
                         iMessage.set_data(std::string(m_recvbuf));
 
                         // get the length of message
                         int32_t iMessageLength = iMessage.ByteSizeLong();
-                        printf("2  message length is: %s", iMessageLength);
+                       cout << "2 now messagelen is: " <<  iMessageLength << "\n";
                         
                         // construct header
                         MessageHead iMessageHead;
                         iMessageHead.m_Length =  iMessageLength;
 
                         // add header byte 
+                        memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
                         iMessage.SerializeToArray(m_sendbuf+iMessageHeadLength, iMessage.ByteSizeLong()); // TODO:caution overflow
 
