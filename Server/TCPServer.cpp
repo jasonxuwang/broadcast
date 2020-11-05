@@ -92,13 +92,13 @@ void TCPServer::poll(){
         		memset( m_user_map[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
-                     std::cout << "handling client" << "\n";
+                    std::cout << "handling client" << "\n";
                     int32_t iMessageLength;
                     Message iMessage;
                     std::map<int32_t, User>::iterator iter;
                     int32_t offset = 0;
                     do{
-                        std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd ;
+                        //std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd ;
                         iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset);
                         get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
                         std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
@@ -119,18 +119,7 @@ void TCPServer::poll(){
 
                     }while(iMessageLength>0);
 
-                    // get message length from buffer
-                    // int iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf);
-                    // std::cout << "message length from client is : " << iMessageLength << "\n";
-                    // get message from buffer
-                   
-                    // create a Message class. from server, send to user id
-                    // Message iMessage;
-                    // iMessage.set_from(m_epoll_event->data.fd);
-                    // // iMessage.set_to();
-                    // iMessage.set_data(std::string(m_recvbuf));
-
-                    // iterate over usermap, broadcast message.
+    
 		
 
     			}else{

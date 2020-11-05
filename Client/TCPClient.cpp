@@ -80,11 +80,11 @@ void TCPClient::poll(){
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
                 
                 int iMessageLength = 0;
-                  Message iMessage;
-                  int offset = 0;
+                Message iMessage;
+                int offset = 0;
                 do{
                     iMessageLength = decode_int32(m_recvbuf);
-                    get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
+                    get_message(m_recvbuf+sizeof(int32_t)+offset, iMessageLength, &iMessage );
                     offset+=iMessageLength;
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                 }
