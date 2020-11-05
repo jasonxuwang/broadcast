@@ -21,7 +21,7 @@ int32_t decode_int32(char *iBuff) {
     int num = 0;
     for (int i=0;i<4;i++){
         num<<8;
-        num |= m_sendbuf[i];
+        num |= iBuff[i];
     }
     return num;
 }
