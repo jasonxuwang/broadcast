@@ -7,23 +7,23 @@
 
 
 
-int32_t encode_int32(char **pOut,  uint32_t Src) {
-    if (NULL == pOut || NULL == *pOut) {
-        return 0;
-    }
-
-    *(uint32_t*)(*pOut) = htonl(Src);
-    *pOut += sizeof(uint32_t);
-    return int32_t(sizeof(uint32_t));
+int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
+    char bytes[4];
+    bytes[0] = (iMessageLength>>24) & 0xFF;
+    bytes[1] = (iMessageLength>>16) & 0xFF;
+    bytes[2] = (iMessageLength>>8) & 0xFF;
+    bytes[3] = (iMessageLength) & 0xFF;
+    memcpy(iBuff, bytes, sizeof(bytes));
+    return sizeof(int32_t);
 }
 
-int32_t decode_int32(char **pIn,  uint32_t *pOut) {
-    if (NULL == pIn || NULL == *pIn || NULL == pOut) {
-        return 0;
+int32_t decode_int32(char *iBuff) {
+    int num = 0;
+    for (int i=0;i<4;i++){
+        num<<8;
+        num |= m_sendbuf[i];
     }
-    *pOut = (uint32_t) ntohl((uint32_t)*(uint32_t*)(*pIn));
-    *pIn += sizeof(uint32_t);
-    return int32_t(sizeof(uint32_t));
+    return num;
 }
 
 // An implementation of TCP client
@@ -78,13 +78,10 @@ void TCPClient::poll(){
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-
+                
                 std::cout << "now buffer is: " <<  m_recvbuf << "\n";
-                 // get message length from buffer
-                int iMessageLength = get_message_len(m_recvbuf,sizeof(int32_t));
-                if (iMessageLength < 0){
-                    continue;
-                }
+                // get message length from buffer
+                int iMessageLength = decode_int32(m_recvbuf));
                 std::cout << "now messagelen is: " <<  iMessageLength << "\n";
 
                 // get message from buffer
@@ -113,33 +110,16 @@ void TCPClient::poll(){
 
                         // get the length of message
                         int32_t iMessageLength = iMessage.ByteSizeLong();
-                        std::cout << "2 message len is: " <<  iMessageLength << "\n";
-                        
+                        // std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         // construct header
-                        char bytes[4];
-                        bytes[0] = (iMessageLength>>24) & 0xFF;
-                        bytes[1] = (iMessageLength>>16) & 0xFF;
-                        bytes[2] = (iMessageLength>>8) & 0xFF;
-                        bytes[3] = (iMessageLength) & 0xFF;
-                        printf("first four bytes of buffer now is set to %x %x %x %x \n", bytes[0],bytes[1],bytes[2],bytes[3]);
-                        memcpy(m_sendbuf, bytes, sizeof(bytes));
-                        printf("first bytes of buffer now is set to %s \n", m_sendbuf);
-
-                        // get numbers
-                        int num = 0;
-                        for (int i=0;i<4;i++){
-                            num<<8;
-                            num |= m_sendbuf[i];
-                        }
-                        printf("number from bytes  %d \n", num);
-
-
+                        encode_int32(m_sendbuf, iMessageLength);
+                        
                         // add header byte 
                         if (!iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()) ){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf now is :" << m_sendbuf << std::endl ;
+                        // std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf now is :" << m_sendbuf << std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 

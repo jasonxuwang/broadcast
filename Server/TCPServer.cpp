@@ -7,6 +7,27 @@
 #define BUFFSIZE 1024
 
 
+int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
+    char bytes[4];
+    bytes[0] = (iMessageLength>>24) & 0xFF;
+    bytes[1] = (iMessageLength>>16) & 0xFF;
+    bytes[2] = (iMessageLength>>8) & 0xFF;
+    bytes[3] = (iMessageLength) & 0xFF;
+    memcpy(iBuff, bytes, sizeof(bytes));
+    return sizeof(int32_t);
+}
+
+int32_t decode_int32(char *iBuff) {
+    int num = 0;
+    for (int i=0;i<4;i++){
+        num<<8;
+        num |= m_sendbuf[i];
+    }
+    return num;
+}
+
+
+
 // An implementation of TCP server
 TCPServer::TCPServer(){
 
@@ -79,15 +100,10 @@ void TCPServer::poll(){
                     // proecss:     2. if reached the end of buffer, holdon and wait for next incoming message. 
 
                     // get message length from buffer
-                    int iMessageHeaderLength =  sizeof(int32_t);
-                    int iMessageLength = get_message_len(m_recvbuf,iMessageHeaderLength);
-                    if (iMessageLength < 0){
-                        continue;
-                    }
-
+                    int iMessageLength = decode_int32(m_recvbuf);
                     // get message from buffer
                     Message iMessage;
-                    get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, &iMessage );
+                    get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
 
                     // create a Message class. from server, send to user id
@@ -107,18 +123,9 @@ void TCPServer::poll(){
 
                         int32_t iMessageLength = iMessage.ByteSizeLong();
                         // construct header
-                        MessageHead iMessageHead;
-                        iMessageHead.m_Length = iMessageLength;
+                        encode_int32(m_sendbuf,iMessageLength )
+                        iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
 
-                        // add header byte 
-                        if (strlen(m_sendbuf) < 0){
-                            continue;
-                        }
-                        int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
-                        iMessage.SerializeToArray(m_sendbuf+iMessageHeadLength, iMessage.ByteSizeLong()); // TODO:caution overflow
-
-
-                        // iMessage.SerializeToArray(m_recvbuf, iMessage.ByteSizeLong()); // TODO:caution overflow
 						send(iter->first, m_sendbuf, strlen(m_sendbuf), 0);
 
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
