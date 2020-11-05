@@ -96,6 +96,7 @@ void TCPClient::poll(){
                         
                         // construct header
                         memcpy(m_sendbuf, &iMessageLength, sizeof(int32_t));
+                        printf("first bytes of buffer now is set to %s", m_sendbuf);
 
 
                         // add header byte 
