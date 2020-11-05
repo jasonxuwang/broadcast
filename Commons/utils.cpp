@@ -26,7 +26,7 @@ int32_t get_message_len(char* iBuffer, int32_t iHeaderLength){
  * construct a message object
  * return the length of message.
  * */
-int32_t get_message(char* iBuffer, int32_t iMessageLength, *Message iMessage ){
+int32_t get_message(char* iBuffer, int32_t iMessageLength, Message* iMessage ){
     if (strlen(iBuffer) < iMessageLength){
         return -1;
     }
