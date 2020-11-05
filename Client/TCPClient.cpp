@@ -62,8 +62,7 @@ void TCPClient::poll(){
 
                 std::cout << "now buffer is: " <<  m_recvbuf << "\n";
                  // get message length from buffer
-                int iMessageHeaderLength =  sizeof(int32_t);
-                int iMessageLength = get_message_len(m_recvbuf,iMessageHeaderLength);
+                int iMessageLength = get_message_len(m_recvbuf,sizeof(int32_t));
                 if (iMessageLength < 0){
                     continue;
                 }
@@ -71,7 +70,7 @@ void TCPClient::poll(){
 
                 // get message from buffer
                 Message iMessage;
-                get_message(m_recvbuf+iMessageHeaderLength, iMessageLength, &iMessage );
+                get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
                 std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
 
                 // Message iMessage;
@@ -82,31 +81,29 @@ void TCPClient::poll(){
         // if user input, read it into buffer and send to server.
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_recvbuf, '\0', BUFFSIZE);
-                
                 gets(m_recvbuf);
-                
                 if (strlen(m_recvbuf) > 0 ){
                         std::cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
                         Message iMessage;
                         iMessage.set_data(std::string(m_recvbuf));
+                        iMessage.set_to(-1);
+                        iMessage.set_from(2);
+
 
                         // get the length of message
                         int32_t iMessageLength = iMessage.ByteSizeLong();
-                       std::cout << "2 now messagelen is: " <<  iMessageLength << "\n";
+                        std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         
                         // construct header
-                        MessageHead iMessageHead;
-                        iMessageHead.m_Length =  iMessageLength;
+                        memcpy(m_sendbuf, &iMessageLength, sizeof(int32_t));
+
 
                         // add header byte 
-                        memset(m_sendbuf, '\0', BUFFSIZE);
-                        int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
-                        std::cout << "2 headerlen = " << iMessageHeadLength<< "\n";
-                        if (!iMessage.SerializeToArray(m_sendbuf+2, iMessage.ByteSizeLong()) ){
+                        if (!iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()) ){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        std::cout <<  "2sendbuf len = :" << strlen(m_sendbuf) << "[client] sendbuf now is :" << m_sendbuf << std::endl ;
+                        std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf now is :" << m_sendbuf << std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 

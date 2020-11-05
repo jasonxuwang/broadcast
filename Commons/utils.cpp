@@ -11,13 +11,16 @@ int32_t get_message_len(char* iBuffer, int32_t iHeaderLength){
     if (strlen(iBuffer) < iHeaderLength){
         return -1;
     }
+    int32_t iMessageLength;
+    memcpy(&iMessageLength, iBuffer, sizeof(int32_t));
+    return iMessageLength;
 
-    // get message header from the initial chars
-    MessageHead iMessageHead;
-    iMessageHead.toClass(iBuffer, iHeaderLength);
+    // // get message header from the initial chars
+    // MessageHead iMessageHead;
+    // iMessageHead.toClass(iBuffer, iHeaderLength);
 
-    // now we have the length of message body;
-    return iMessageHead.m_Length;
+    // // now we have the length of message body;
+    // return iMessageHead.m_Length;
 }
 
 
