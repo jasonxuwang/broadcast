@@ -72,11 +72,10 @@ void TCPServer::poll(){
 
 
                     // create a Message class. from server, send to user id
-                    // Message iMessage;
-                    iMessage.set_from(-1);
+                    Message iMessage;
+                    iMessage.set_from(m_epoll_event->data.fd);
                     // iMessage.set_to();
-                    iMessage.set_data(string(m_recvbuf));
-
+                    iMessage.set_data(std::string(m_recvbuf));
 
                     // iterate over usermap, broadcast message.
 					std::map<int32_t, User>::iterator iter;
