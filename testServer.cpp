@@ -6,4 +6,6 @@ int main(){
 
     myServer.init();
     myServer.run();
+
+    return 0;
 }
