@@ -44,8 +44,8 @@ class TCPServer{
         TCPServer();
         ~TCPServer();
         void run();
-        void init()
-        void poll()
+        void init();
+        void poll();
     private:
 
 
