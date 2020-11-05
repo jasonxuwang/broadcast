@@ -6,10 +6,11 @@ int main(){
     MessageHead mh;
     mh.m_Length = 10;
     char buf[1024];
-    if (memset(buf, 0, sizeof(buf)) == -1){
+    memset(buf, 0, sizeof(buf));
+    if ( mh.toBytes(buf) ==-1){
         printf ("failed!");
     }
-    mh.toBytes(buf);
+    
 
     printf("bytes are: %x", *buf);
     return 0;
