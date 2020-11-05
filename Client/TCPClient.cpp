@@ -102,7 +102,7 @@ void TCPClient::poll(){
                         memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
                         std::cout << "2 headerlen = " << iMessageHeadLength<< "\n";
-                        if (!iMessage.SerializeToArray(m_sendbuf+0, iMessage.ByteSizeLong()) ){
+                        if (!iMessage.SerializeToArray(m_sendbuf+2, iMessage.ByteSizeLong()) ){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
