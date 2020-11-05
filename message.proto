@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-message Message{
-    int32 from =1;
-    int32  to = 2;
-    string data =3;
-}
-
