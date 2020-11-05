@@ -79,15 +79,25 @@ void TCPClient::poll(){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
                 
-                std::cout << "now buffer is: " <<  m_recvbuf << "\n";
-                // get message length from buffer
-                int iMessageLength = decode_int32(m_recvbuf);
-                std::cout << "now messagelen is: " <<  iMessageLength << "\n";
+                int iMessageLength = 0;
+                  Message iMessage;
+                  int offset = 0;
+                do{
+                    iMessageLength = decode_int32(m_recvbuf);
+                    get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
+                    offset+=iMessageLength;
+                    std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+                }
+                while (iMessageLength > 0);
 
+                // std::cout << "now buffer is: " <<  m_recvbuf << "\n";
+                // get message length from buffer
+                //int iMessageLength = decode_int32(m_recvbuf);
+                //std::cout << "now messagelen is: " <<  iMessageLength << "\n";
                 // get message from buffer
-                Message iMessage;
-                get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
-                std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+              
+               
+                //std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
 
                 // Message iMessage;
                 // iMessage.ParseFromArray(m_recvbuf, strlen(m_recvbuf));
