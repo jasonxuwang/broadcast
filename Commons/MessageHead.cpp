@@ -3,7 +3,7 @@
 #include <cstring>
 int main(){
 
-    MessageHead mh;
+    MessageHead mh, mh2;
     mh.m_Length = 10;
     char buf[1024];
     memset(buf, 0, sizeof(buf));
@@ -13,6 +13,11 @@ int main(){
     
 
     printf("bytes are: %x", *buf);
+
+
+    // 
+    mh2.toClass(buf, sizeof(int32_t));
+    printf("m2 mlength now is: %d", mh2.m_Length);
     return 0;
 }
 
@@ -35,10 +40,6 @@ int32_t MessageHead::toBytes(char* to_buffer){
 }       
 
 int32_t MessageHead::toClass(char* from_buffer, int32_t outputLength){
-    if (outputLength < sizeof(int32_t) ){
-            return -1;
-    }
-
     memcpy(&m_Length, from_buffer, sizeof(int32_t));
     return 0;
 }
