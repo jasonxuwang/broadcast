@@ -103,7 +103,7 @@ void TCPClient::poll(){
                         int32_t iMessageHeadLength = iMessageHead.toBytes(m_sendbuf);
                         iMessage.SerializeToArray(m_sendbuf+iMessageHeadLength, iMessage.ByteSizeLong()); // TODO:caution overflow
 
-                        //printf("[client] m_recvbuf now is : %s\n", m_recvbuf);
+                        std::cout << "[client] sendbuf now is : %s\n" << m_sendbuf << "sendbuf len = :" << strlen(m_sendbuf) ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
                 }
 
