@@ -101,7 +101,7 @@ void TCPServer::poll(){
 
                     // get message length from buffer
                     int iMessageLength = decode_int32(m_recvbuf);
-                    std::cout
+                    std::cout << "message length from client is : " << iMessageLength << "\n";
                     // get message from buffer
                     Message iMessage;
                     get_message(m_recvbuf+sizeof(int32_t), iMessageLength, &iMessage );
