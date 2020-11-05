@@ -1,7 +1,7 @@
 #include "TCPServer.h"
 
 // //
-#define PORT 10005
+#define PORT 10006
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024
@@ -128,7 +128,7 @@ void TCPServer::poll(){
                         encode_int32(m_sendbuf,iMessageLength );
                         iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
 
-						send(iter->first, m_sendbuf, strlen(m_sendbuf), 0);
+						send(iter->first, m_sendbuf, m_sendbuf,iMessageLength + sizeof(int32_t), 0);
 
             			fprintf(stderr,"[server] send to: %d\n\n", iter->first);
         				iter++;

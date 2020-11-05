@@ -1,5 +1,5 @@
 #include "TCPClient.h"
-#define PORT 10005
+#define PORT 10006
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024
@@ -110,7 +110,7 @@ void TCPClient::poll(){
 
                         // get the length of message
                         int32_t iMessageLength = iMessage.ByteSizeLong();
-                        // std::cout << "2 message len is: " <<  iMessageLength << "\n";
+                        std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         // construct header
                         encode_int32(m_sendbuf, iMessageLength);
                         
@@ -119,8 +119,8 @@ void TCPClient::poll(){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        // std::cout <<  "2 sendbuf len = :" << strlen(m_sendbuf) <<  "[client] sendbuf now is :" << m_sendbuf << std::endl ;
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, strlen(m_sendbuf),0);
+                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << std::endl ;
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
                 }
 
         }else{
