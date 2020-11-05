@@ -12,7 +12,7 @@ int main(){
     memset(buf, 0, sizeof(buf));
     mh.toBytes(buf);
 
-    printf("bytes are: %x",buf);
+    printf("bytes are: %x", *buf);
     return 0;
 }
 
