@@ -118,6 +118,8 @@ void TCPClient::poll(){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
+                        memcpy(m_sendbuf+iMessageLength + sizeof(int32_t) , m_sendbuf, iMessageLength + sizeof(int32_t));
+
                         std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
                 }
