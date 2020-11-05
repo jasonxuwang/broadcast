@@ -30,6 +30,6 @@ int32_t get_message(char* iBuffer, int32_t iMessageLength, Message* iMessage ){
     if (strlen(iBuffer) < iMessageLength){
         return -1;
     }
-    iMessage.ParseFromArray(iBuffer, iMessageLength);
+    iMessage->ParseFromArray(iBuffer, iMessageLength);
     return iMessageLength;
 }
