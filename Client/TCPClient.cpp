@@ -60,14 +60,14 @@ void TCPClient::poll(){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
 
-                cout << "now buffer is: " <<  m_recvbuf << "\n";
+                std::cout << "now buffer is: " <<  m_recvbuf << "\n";
                  // get message length from buffer
                 int iMessageHeaderLength =  sizeof(int32_t);
                 int iMessageLength = get_message_len(m_recvbuf,iMessageHeaderLength);
                 if (iMessageLength < 0){
                     continue;
                 }
-                cout << "now messagelen is: " <<  iMessageLength << "\n";
+                std::cout << "now messagelen is: " <<  iMessageLength << "\n";
 
                 // get message from buffer
                 Message iMessage;
@@ -86,13 +86,13 @@ void TCPClient::poll(){
                 gets(m_recvbuf);
                 
                 if (strlen(m_recvbuf) > 0 ){
-                        cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
+                        std::cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
                         Message iMessage;
                         iMessage.set_data(std::string(m_recvbuf));
 
                         // get the length of message
                         int32_t iMessageLength = iMessage.ByteSizeLong();
-                       cout << "2 now messagelen is: " <<  iMessageLength << "\n";
+                       std::cout << "2 now messagelen is: " <<  iMessageLength << "\n";
                         
                         // construct header
                         MessageHead iMessageHead;
