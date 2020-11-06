@@ -98,7 +98,7 @@ void TCPServer::poll(){
                     std::map<int32_t, User>::iterator iter;
                     int32_t offset = 0;
                     do{
-                        //std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd ;
+                        std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd ;
                         iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset);
 
                         if (iMessageLength <= 0){
@@ -106,7 +106,7 @@ void TCPServer::poll(){
                         }
 
                         get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
-                        std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+                        std::cout << "[server] From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                         offset +=iMessageLength;
     				    iter = m_user_map.begin();
     				    while(iter != m_user_map.end()) {
