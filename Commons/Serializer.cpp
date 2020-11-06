@@ -24,6 +24,11 @@ Serializer::Serializer(){
     reset();
 }
 
+
+Serializer::~Serializer(){
+}
+
+
 //  Message m_Message;
 //         char m_uffer[BUFSIZ];
 int32_t Serializer::read(char* iBuffer, int32_t iSize){
