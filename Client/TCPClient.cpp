@@ -1,5 +1,5 @@
 #include "TCPClient.h"
-#define PORT 10008
+#define PORT 10009
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024
@@ -84,9 +84,9 @@ void TCPClient::poll(){
                 int offset = 0;
                 do{
                     iMessageLength = decode_int32(m_recvbuf+offset);
-                    if (iMessageLength <= 0){
-                            break;
-                    }
+                    // if (iMessageLength <= 0){
+                    //         break;
+                    // }
                     get_message(m_recvbuf+sizeof(int32_t)+offset, iMessageLength, &iMessage );
                     offset+=iMessageLength;
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
