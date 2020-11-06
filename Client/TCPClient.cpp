@@ -1,5 +1,5 @@
 #include "TCPClient.h"
-#define PORT 10008
+#define PORT 10009
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024
@@ -78,7 +78,7 @@ void TCPClient::poll(){
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-                
+                std::cout << "recv buffer is now : " << m_recvbuf << "\n";
                 int iMessageLength = 0;
                 Message iMessage;
                 int offset = 0;
@@ -87,8 +87,10 @@ void TCPClient::poll(){
                     if (iMessageLength <= 0){
                             break;
                     }
-                    get_message(m_recvbuf+sizeof(int32_t)+offset, iMessageLength, &iMessage );
+                    offset += sizeof(int32_t);
+                    get_message(m_recvbuf+offset, iMessageLength, &iMessage );
                     offset+=iMessageLength;
+
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                 }
                 while (iMessageLength > 0);
@@ -98,8 +100,8 @@ void TCPClient::poll(){
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_recvbuf, '\0', BUFFSIZE);
                 gets(m_recvbuf);
-                if (strlen(m_recvbuf) > 0 ){
 
+                if (strlen(m_recvbuf) > 0 ){
                         // tes
                         std::cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
                         Message iMessage;
@@ -111,6 +113,8 @@ void TCPClient::poll(){
                         int32_t iMessageLength = iMessage.ByteSizeLong();
                         std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         // construct header
+                        // clear send buffer
+                        memset(m_sendbuf, '\0', BUFFSIZE);
                         encode_int32(m_sendbuf, iMessageLength);
                         
                         // add header byte 
@@ -118,9 +122,8 @@ void TCPClient::poll(){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        //memcpy(m_sendbuf+iMessageLength + sizeof(int32_t) , m_sendbuf, iMessageLength + sizeof(int32_t));
 
-                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << std::endl ;
+                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
                 }
 

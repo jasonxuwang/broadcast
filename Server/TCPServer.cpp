@@ -1,10 +1,19 @@
 #include "TCPServer.h"
 
 // //
-#define PORT 10008
+#define PORT 10009
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024
+
+// An implementation of TCP server
+TCPServer::TCPServer(){
+
+}
+
+TCPServer::~TCPServer(){
+    
+}
 
 
 int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
@@ -24,17 +33,6 @@ int32_t decode_int32(char *iBuff) {
         num |= iBuff[i];
     }
     return num;
-}
-
-
-
-// An implementation of TCP server
-TCPServer::TCPServer(){
-
-}
-
-TCPServer::~TCPServer(){
-    
 }
 
 /*
@@ -78,7 +76,9 @@ void TCPServer::poll(){
 				// store client fd to user map
 				User new_user;
 				new_user.id = conn_sock;
-				m_user_map[conn_sock] = new_user;
+                memset( new_user.m_sendbuf, '\0', BUFFSIZE );
+                memset( new_user.m_recvbuf, '\0', BUFFSIZE );
+                
 				
 				// set non blocking 
 				int flags = fcntl(conn_sock, F_GETFL, 0);
@@ -93,21 +93,31 @@ void TCPServer::poll(){
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
                     std::cout << "handling client" << "\n";
+                    // print full buffer
+                    int i;
+                    for (i=0;i<BUFFSIZE;i++){
+                        std::cout<< m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
+                    }
+                    std::cout << std::endl;
+
                     int32_t iMessageLength;
                     Message iMessage;
                     std::map<int32_t, User>::iterator iter;
                     int32_t offset = 0;
                     do{
-                        //std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd ;
-                        iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset);
+                        std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd << std::endl ;
+                        iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset); // problem
+                        std::cout << "iMessageLength is now " <<  iMessageLength  << std::endl ;
 
                         if (iMessageLength <= 0){
-                            break;
+                            break; 
                         }
-                        
-                        get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
-                        std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+                        offset += sizeof(int32_t);
+
+                        get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset, iMessageLength, &iMessage );
+                        std::cout << "[server] From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                         offset +=iMessageLength;
+
     				    iter = m_user_map.begin();
     				    while(iter != m_user_map.end()) {
                             iMessage.set_to(iter->first);
@@ -129,6 +139,7 @@ void TCPServer::poll(){
 
     			}else{
 					// if recv returns 0, close the connection and unregister the user
+                    std::cout << "[server] Client " << m_epoll_event->data.fd << " left \n";
 					m_epoll.epoll_close(m_epoll_event->data.fd); //?
 					m_user_map.erase(m_epoll_event->data.fd);
 				}
