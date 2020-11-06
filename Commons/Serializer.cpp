@@ -76,8 +76,8 @@ int32_t Serializer::deserialize(){
         reset();
         return 0;
     }
-
     m_offset += sizeof(int32_t);
+    
     if (!m_Message.ParseFromArray(m_buffer+m_offset, m_MessageLength) ){
         //如果读取出错，重置所有Buffer
         std::cout << "read error in deserialize";
