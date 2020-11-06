@@ -1,6 +1,3 @@
-
-
-
 #include <stdint.h>
 #include <netinet/tcp.h>
 #include <unistd.h>
@@ -27,29 +24,40 @@
 #include <sys/epoll.h>
 #include <map>
 #include <iostream>
+// #include "message.pb.h"
+#include "../Protobuf/message.pb.h"
+#include "../Commons/MessageHead.h"
+#include "../Commons/utils.h"
+
 #define BUFSIZE 1024
 
-class TCPSocket{
+struct User{
+	int32_t id;
+    char m_sendbuf[BUFSIZE];
+    char m_recvbuf[BUFSIZE];
+};
+
+
+
+class TCPServer{
+
+    public:
+        TCPServer();
+        ~TCPServer();
+        void run();
+        void init();
+        void poll();
+    private:
 
 
     public:
-        TCPSocket();
-        ~TCPSocket();
 
     private:
-        int32_t m_socket_fd, addrlen;
-        char recvbuf[BUFSIZE], sendbuf[BUFSIZE];
-        struct sockaddr_in m_socket_addr;
-	    struct sockaddr_in m_client_addr;
-
-    public:
-        int32_t as_server(int32_t port);
-        int32_t as_client(char* ipstr,int32_t port);
-        int32_t get_socket_fd();
-        // wrapper for socket functions
-
-        int32_t accept_conn();
-        
-    private:
-
+        char m_sendbuf[BUFSIZE];
+        char m_recvbuf[BUFSIZE];
+        TCPSocket m_TCPSocket;
+        Epoll m_epoll;
+        int32_t m_epoll_fd;
+        struct epoll_event * m_epoll_event; 
+        std::map<int32_t, User> m_user_map;
 };

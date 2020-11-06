@@ -1,32 +1,3 @@
-
-
-
-#include <stdint.h>
-#include <netinet/tcp.h>
-#include <unistd.h>
-#include <cstring>
-#include <cstdio>
-#include <iostream>
-#include <stdlib.h>
-#include <signal.h>
-#include <netinet/in.h>
-#include <sys/time.h>
-#include <sys/file.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <sys/ioctl.h>
-#include <netinet/tcp.h>
-#include <net/if.h>
-#include <dirent.h>
-#include <dlfcn.h>
-#include <sys/select.h>
-#include <assert.h>
-#include <string>
-#include <sys/epoll.h>
-#include <map>
-#include <iostream>
 #include "TCPSocket.h"
 
 TCPSocket::TCPSocket(){
@@ -90,6 +61,12 @@ int32_t TCPSocket::as_server(int32_t port){
 	
     return m_socket_fd;
 }
+
+void TCPSocket::clear_buff(char* iBuff){
+    memset(iBuff, '\0', BUFSIZE );
+
+}
+
 
 int32_t TCPSocket::accept_conn(){
     return  accept(m_socket_fd, (struct sockaddr *) &m_client_addr, (socklen_t*) &addrlen);
