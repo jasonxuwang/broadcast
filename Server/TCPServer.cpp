@@ -78,7 +78,9 @@ void TCPServer::poll(){
 				// store client fd to user map
 				User new_user;
 				new_user.id = conn_sock;
-				m_user_map[conn_sock] = new_user;
+                memset( new_user.m_sendbuf, '\0', BUFFSIZE );
+                memset( new_user.m_recvbuf, '\0', BUFFSIZE );
+                
 				
 				// set non blocking 
 				int flags = fcntl(conn_sock, F_GETFL, 0);
@@ -93,6 +95,13 @@ void TCPServer::poll(){
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
                     std::cout << "handling client" << "\n";
+                    // print full buffer
+                    int i;
+                    for (i=0;i<BUFFSIZE;i++){
+                        std::cout<< m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
+                    }
+                    std::cout << std::end;
+
                     int32_t iMessageLength;
                     Message iMessage;
                     std::map<int32_t, User>::iterator iter;
@@ -100,10 +109,10 @@ void TCPServer::poll(){
                     do{
                         std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd << std::endl ;
                         iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset);
-                         std::cout << "iMessageLength is now " <<  iMessageLength  << std::endl ;
+                        std::cout << "iMessageLength is now " <<  iMessageLength  << std::endl ;
 
                         if (iMessageLength <= 0){
-                            break;
+                            break; 
                         }
 
                         get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
