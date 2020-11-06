@@ -44,8 +44,6 @@ void TCPClient::run(){
     }
 }
 
-
-
 /*
     poll function performs one query, see if any incoming events are captureed. 
 */
@@ -65,6 +63,8 @@ void TCPClient::poll(){
                 // std::cout << "recv buffer is now : " << m_recvbuf << "\n";
                 m_Serializer.read(m_recvbuf, BUFFSIZE);
                 while(m_Serializer.deserialize() > 0){
+
+                    //  simply print out 
                     std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
                 }
                 m_Serializer.reset();
@@ -85,25 +85,26 @@ void TCPClient::poll(){
 
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
                         std::cout <<  "[client] sendbuf now is :" << m_sendbuf<< std::endl;
-
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
+                        
                         // test
-                        Message iMessage2;
-                        int32_t iMessageLength2;
-                        iMessage2.set_data("Test serialize");
-                        iMessage2.set_to(-1);
-                        iMessage2.set_from(2); 
+                        // Message iMessage2;
+                        // int32_t iMessageLength2;
+                        // iMessage2.set_data("Test serialize");
+                        // iMessage2.set_to(-1);
+                        // iMessage2.set_from(2); 
 
-                        iMessageLength2 = m_Serializer.serialize(iMessage2, m_sendbuf+iMessageLength+sizeof(int32_t));
-                        // print all in sendbuf
+                        // iMessageLength2 = m_Serializer.serialize(iMessage2, m_sendbuf+iMessageLength+sizeof(int32_t));
+                        // // print all in sendbuf
 
-                        int i ;
-                        for (i=0;i<BUFFSIZE;i++){
-                            std::cout << m_sendbuf[i];
-                        }
-                        std::cout << std::endl;
+                        // int i ;
+                        // for (i=0;i<BUFFSIZE;i++){
+                        //     std::cout << m_sendbuf[i];
+                        // }
+                        // std::cout << std::endl;
 
 
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength+iMessageLength2 + 2*sizeof(int32_t) ,0);
+                        // send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength+iMessageLength2 + 2*sizeof(int32_t) ,0);
 
                 }
 

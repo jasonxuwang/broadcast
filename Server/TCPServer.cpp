@@ -95,17 +95,20 @@ void TCPServer::poll(){
                     Message iMessage;
 
                         // print all for buffer
-                        int i ;
-                        for (i=0;i<BUFFSIZE;i++){
-                            std::cout << m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
-                        }
-                        std::cout << std::endl;
+                        // int i ;
+                        // for (i=0;i<BUFFSIZE;i++){
+                        //     std::cout << m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
+                        // }
+                        // std::cout << std::endl;
 
                     m_Serializer.read(m_user_map[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE);
                     while(m_Serializer.deserialize() > 0){
                         
                         std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
                         iter = m_user_map.begin();
+
+
+                        // logic broad cast to all clients
     				    while(iter != m_user_map.end()) {
                             iMessage.set_to(iter->first);
                             iMessage.set_from(m_Serializer.m_Message.from());
