@@ -52,7 +52,7 @@ class Serializer{
         int32_t serialize(Message iMessage, char* iBuffer); // parse a message from the current buffer, set the message member;
         int32_t deserialize(); // 
         Message getMessage(); // return the member message;
-        void Serializer::reset();
+        void reset();
 
 
     private:

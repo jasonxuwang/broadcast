@@ -37,7 +37,7 @@ int32_t Serializer::read(char* iBuffer, int32_t iSize){
 
 void Serializer::reset(){
     memset(m_buffer, '\0', BUFSIZE);     // empty buffer first 
-    m_MessageLength = 0
+    m_MessageLength = 0;
     m_offset = 0;
 }
 
@@ -49,7 +49,7 @@ int32_t Serializer::serialize(Message iMessage, char* iBuffer){
     int32_t tMessageLength = iMessage.ByteSizeLong();
 
     //长度复制到buffer首部
-    encode_int32(iBuffer,iMessageLength );
+    encode_int32(iBuffer,tMessageLength );
 
     // serailize message对象
     iMessage.SerializeToArray(iBuffer+sizeof(int32_t), tMessageLength); // 长度放到buffer中
