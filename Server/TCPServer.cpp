@@ -118,39 +118,39 @@ void TCPServer::poll(){
 
 
 
-                    int32_t iMessageLength;
-                    Message iMessage;
-                    std::map<int32_t, User>::iterator iter;
-                    int32_t offset = 0;
-                    do{
-                        std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd << std::endl ;
-                        iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset); // problem
-                        std::cout << "iMessageLength is now " <<  iMessageLength  << std::endl ;
+                    // int32_t iMessageLength;
+                    // Message iMessage;
+                    // std::map<int32_t, User>::iterator iter;
+                    // int32_t offset = 0;
+                    // do{
+                    //     std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd << std::endl ;
+                    //     iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset); // problem
+                    //     std::cout << "iMessageLength is now " <<  iMessageLength  << std::endl ;
 
-                        if (iMessageLength <= 0){
-                            break; 
-                        }
-                        offset += sizeof(int32_t);
+                    //     if (iMessageLength <= 0){
+                    //         break; 
+                    //     }
+                    //     offset += sizeof(int32_t);
 
-                        get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset, iMessageLength, &iMessage );
-                        std::cout << "[server] From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
-                        offset +=iMessageLength;
+                    //     get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset, iMessageLength, &iMessage );
+                    //     std::cout << "[server] From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+                    //     offset +=iMessageLength;
 
-    				    iter = m_user_map.begin();
-    				    while(iter != m_user_map.end()) {
-                            iMessage.set_to(iter->first);
-                        // set buffer empty
-                            memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
-                            int32_t iMessageLength = iMessage.ByteSizeLong();
-                        // construct header
-                            encode_int32(iter->second.m_sendbuf,iMessageLength );
-                            iMessage.SerializeToArray(iter->second.m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
-						    send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
-            			    fprintf(stderr,"[server] send to: %d\n\n", iter->first);
-        				    iter++;
-    				    }
+    				//     iter = m_user_map.begin();
+    				//     while(iter != m_user_map.end()) {
+                    //         iMessage.set_to(iter->first);
+                    //     // set buffer empty
+                    //         memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
+                    //         int32_t iMessageLength = iMessage.ByteSizeLong();
+                    //     // construct header
+                    //         encode_int32(iter->second.m_sendbuf,iMessageLength );
+                    //         iMessage.SerializeToArray(iter->second.m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
+					// 	    send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+            		// 	    fprintf(stderr,"[server] send to: %d\n\n", iter->first);
+        			// 	    iter++;
+    				//     }
 
-                    }while(iMessageLength>0);
+                    // }while(iMessageLength>0);
 
     			}else{
 					// if recv returns 0, close the connection and unregister the user
