@@ -6,7 +6,6 @@ Epoll::Epoll(){
 
 }
 
-
 Epoll::~Epoll(){
     
 }
