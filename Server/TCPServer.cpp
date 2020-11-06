@@ -76,13 +76,21 @@ void TCPServer::poll(){
 				new_user.id = conn_sock;
                 memset( new_user.m_sendbuf, '\0', BUFFSIZE );
                 memset( new_user.m_recvbuf, '\0', BUFFSIZE );
-                
+                m_user_map[conn_sock] = new_user;
+
 				// set non blocking 
 				int flags = fcntl(conn_sock, F_GETFL, 0);
 				if (fcntl(conn_sock, F_SETFL, flags | O_NONBLOCK) < 0){
 					std::cout << "set non blocking failed \n";
 				}
 				m_epoll.epoll_add(conn_sock);
+                
+                // tell client he/she is connected
+                iMessage.set_to(conn_sock);
+                iMessage.set_from(-1);
+                iMessage.set_data("You are connected!" + std::to_string(conn_sock));
+                int iMessageLength = m_Serializer.serialize(iMessage, m_user_map[conn_sock].m_sendbuf);
+                send(conn_sock,  m_user_map[conn_sock].m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
         
 		// if this is an incoming message from existing connection
 		}else{
