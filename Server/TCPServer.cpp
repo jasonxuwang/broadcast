@@ -135,9 +135,6 @@ void TCPServer::poll(){
 
                     }while(iMessageLength>0);
 
-    
-		
-
     			}else{
 					// if recv returns 0, close the connection and unregister the user
                     std::cout << "[server] Client " << m_epoll_event->data.fd << " left \n";

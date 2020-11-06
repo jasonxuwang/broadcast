@@ -97,14 +97,10 @@ void TCPClient::poll(){
                         iMessage.set_to(-1);
                         iMessage.set_from(2);
 
-                        // get the length of message
-                        int32_t iMessageLength = iMessage.ByteSizeLong();
-                        std::cout << "2 message len is: " <<  iMessageLength << "\n";
-                        // construct header
-                        // clear send buffer
-                        m_Serializer.serialize(iMessage, m_sendbuf);
-                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
-                        
+
+                        int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
+                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) std::endl ;
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
 
 
 
@@ -116,7 +112,7 @@ void TCPClient::poll(){
                         // } // TODO:caution overflow
 
                         // std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
-                        // send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
+                        // 
                 }
 
         }else{

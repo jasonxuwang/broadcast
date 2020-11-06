@@ -57,6 +57,8 @@ int32_t Serializer::serialize(Message iMessage, char* iBuffer){
 
     // serailize message对象
     iMessage.SerializeToArray(iBuffer+sizeof(int32_t), tMessageLength); // 长度放到buffer中
+
+    return tMessageLength;
 						   
 } // convert message to char
         
