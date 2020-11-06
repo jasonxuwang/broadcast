@@ -7,24 +7,6 @@
 
 
 
-int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
-    char bytes[4];
-    bytes[0] = (iMessageLength>>24) & 0xFF;
-    bytes[1] = (iMessageLength>>16) & 0xFF;
-    bytes[2] = (iMessageLength>>8) & 0xFF;
-    bytes[3] = (iMessageLength) & 0xFF;
-    memcpy(iBuff, bytes, sizeof(bytes));
-    return sizeof(int32_t);
-}
-
-int32_t decode_int32(char *iBuff) {
-    int num = 0;
-    for (int i=0;i<4;i++){
-        num<<8;
-        num |= iBuff[i];
-    }
-    return num;
-}
 
 // An implementation of TCP client
 TCPClient::TCPClient(){
@@ -48,6 +30,7 @@ void TCPClient::init(){
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_epoll.epoll_add(STDIN_FILENO);
+    m_Serializer.reset();
 
 }
 
@@ -78,22 +61,27 @@ void TCPClient::poll(){
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-                std::cout << "recv buffer is now : " << m_recvbuf << "\n";
-                int iMessageLength = 0;
-                Message iMessage;
-                int offset = 0;
-                do{
-                    iMessageLength = decode_int32(m_recvbuf+offset);
-                    if (iMessageLength <= 0){
-                            break;
-                    }
-                    offset += sizeof(int32_t);
-                    get_message(m_recvbuf+offset, iMessageLength, &iMessage );
-                    offset+=iMessageLength;
-
-                    std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
+                // 如果读取到信息
+                // std::cout << "recv buffer is now : " << m_recvbuf << "\n";
+                m_Serializer.read(m_recvbuf, BUFFSIZE);
+                while(m_Serializer.deserialize()){
+                    std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< iMessage.data() <<"\n";
                 }
-                while (iMessageLength > 0);
+                // int iMessageLength = 0;
+                // Message iMessage;
+                // int offset = 0;
+                // do{
+                //     iMessageLength = decode_int32(m_recvbuf+offset);
+                //     if (iMessageLength <= 0){
+                //             break;
+                //     }
+                //     offset += sizeof(int32_t);
+                //     get_message(m_recvbuf+offset, iMessageLength, &iMessage );
+                //     offset+=iMessageLength;
+
+                    
+                // }
+                // while (iMessageLength > 0);
             }
 
         // if user input, read it into buffer and send to server.
@@ -121,7 +109,6 @@ void TCPClient::poll(){
                         if (!iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()) ){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
-
 
                         std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);

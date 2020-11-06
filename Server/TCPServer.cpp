@@ -87,18 +87,19 @@ void TCPServer::poll(){
 				}
 				m_epoll.epoll_add(conn_sock);
         
-		// if this is an incoming message from esiting connection
+		// if this is an incoming message from existing connection
 		}else{
+
         		memset( m_user_map[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
                     std::cout << "handling client" << "\n";
                     // print full buffer
-                    int i;
-                    for (i=0;i<BUFFSIZE;i++){
-                        std::cout<< m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
-                    }
-                    std::cout << std::endl;
+                    // int i;
+                    // for (i=0;i<BUFFSIZE;i++){
+                    //     std::cout<< m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
+                    // }
+                    // std::cout << std::endl;
 
                     int32_t iMessageLength;
                     Message iMessage;
