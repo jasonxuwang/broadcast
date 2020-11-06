@@ -63,20 +63,20 @@ int32_t Serializer::serialize(Message iMessage, char* iBuffer){
 */   
 int32_t Serializer::deserialize(){
     // 先读长度.
-    m_MessageLength = decode_int32(m_buffer+offset);
+    m_MessageLength = decode_int32(m_buffer+m_offset);
     if (m_MessageLength <0) {
         //如果没有东西可读
         reset();
         return 0;
     }
 
-    offset += sizeof(int32);
+    m_offset += sizeof(int32_t);
     if (!m_Message.ParseFromArray(m_buffer+m_offset, m_MessageLength) ){
         //如果读取出错，重置所有Buffer
-        reset()
+        reset();
         return -1;
     }
-    offset += sizeof(m_MessageLength);
+    m_offset += sizeof(m_MessageLength);
     return 1;
    
 

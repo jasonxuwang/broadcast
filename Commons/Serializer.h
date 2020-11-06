@@ -42,17 +42,17 @@
 
 class Serializer{
     public:
-        Serializer::Serializer();
-        Serializer::~Serializer();
+        Serializer();
+        ~Serializer();
 
         //
         Message m_Message;
         char m_buffer[BUFSIZE];
-        int32_t read(char* iBuffer);
-        int32_t serialize(); // parse a message from the current buffer, set the message member;
+        int32_t read(char* iBuffer, int32_t iSize);
+        int32_t serialize(Message iMessage, char* iBuffer); // parse a message from the current buffer, set the message member;
         int32_t deserialize(); // 
         Message getMessage(); // return the member message;
-        
+        void Serializer::reset();
 
 
     private:
