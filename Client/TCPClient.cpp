@@ -56,6 +56,7 @@ void TCPClient::poll(){
     // process each event
     for (n=0; n<numfd;n++){
         m_epoll_event = m_epoll.get_event_by_id(n); // get event id
+
         // if there is a message from server, simply print it out.
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
@@ -66,6 +67,7 @@ void TCPClient::poll(){
                 while(m_Serializer.deserialize() > 0){
                     std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
                 }
+                m_Serializer.reset();
             }
 
         // if user input, read it into buffer and send to server.
