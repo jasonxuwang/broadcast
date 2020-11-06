@@ -85,6 +85,7 @@ void TCPServer::poll(){
 				}
 				m_epoll.epoll_add(conn_sock);
                 
+                Message iMessage;
                 // tell client he/she is connected
                 iMessage.set_to(conn_sock);
                 iMessage.set_from(-1);
