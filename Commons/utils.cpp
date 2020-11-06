@@ -6,24 +6,24 @@
 #include "utils.h"
 
 
-int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
-    char bytes[4];
-    bytes[0] = (iMessageLength>>24) & 0xFF;
-    bytes[1] = (iMessageLength>>16) & 0xFF;
-    bytes[2] = (iMessageLength>>8) & 0xFF;
-    bytes[3] = (iMessageLength) & 0xFF;
-    memcpy(iBuff, bytes, sizeof(bytes));
-    return sizeof(int32_t);
-}
+// int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
+//     char bytes[4];
+//     bytes[0] = (iMessageLength>>24) & 0xFF;
+//     bytes[1] = (iMessageLength>>16) & 0xFF;
+//     bytes[2] = (iMessageLength>>8) & 0xFF;
+//     bytes[3] = (iMessageLength) & 0xFF;
+//     memcpy(iBuff, bytes, sizeof(bytes));
+//     return sizeof(int32_t);
+// }
 
-int32_t decode_int32(char *iBuff) {
-    int num = 0;
-    for (int i=0;i<4;i++){
-        num<<8;
-        num |= iBuff[i];
-    }
-    return num;
-}
+// int32_t decode_int32(char *iBuff) {
+//     int num = 0;
+//     for (int i=0;i<4;i++){
+//         num<<8;
+//         num |= iBuff[i];
+//     }
+//     return num;
+// }
 
 
 
