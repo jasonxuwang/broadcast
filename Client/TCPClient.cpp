@@ -78,7 +78,7 @@ void TCPClient::poll(){
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-                
+                std::cout << "recv buffer is now : " << m_recvbuf << "\n";
                 int iMessageLength = 0;
                 Message iMessage;
                 int offset = 0;
