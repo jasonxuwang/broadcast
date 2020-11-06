@@ -70,6 +70,7 @@ int32_t Serializer::serialize(Message iMessage, char* iBuffer){
 int32_t Serializer::deserialize(){
     // 先读长度.
     m_MessageLength = decode_int32(m_buffer+m_offset);
+    std::cout << "message length = " << m_MessageLength << "\n";
     if (m_MessageLength <0) {
         //如果没有东西可读
         std::cout << "nothing to read in deserialize";
@@ -80,7 +81,7 @@ int32_t Serializer::deserialize(){
 
     if (!m_Message.ParseFromArray(m_buffer+m_offset, m_MessageLength) ){
         //如果读取出错，重置所有Buffer
-        std::cout << "read error in deserialize";
+        std::cout << "read error in deserialize" << "\n";
         reset();
         return -1;
     }
