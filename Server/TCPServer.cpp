@@ -47,6 +47,7 @@ void TCPServer::init(){
     m_TCPSocket.as_server(PORT);
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
+    m_Serializer.reset();
 }
 
 /* main loop, keep query events from epoll */
@@ -79,7 +80,6 @@ void TCPServer::poll(){
                 memset( new_user.m_sendbuf, '\0', BUFFSIZE );
                 memset( new_user.m_recvbuf, '\0', BUFFSIZE );
                 
-				
 				// set non blocking 
 				int flags = fcntl(conn_sock, F_GETFL, 0);
 				if (fcntl(conn_sock, F_SETFL, flags | O_NONBLOCK) < 0){
@@ -94,12 +94,29 @@ void TCPServer::poll(){
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
                     std::cout << "handling client" << "\n";
-                    // print full buffer
-                    // int i;
-                    // for (i=0;i<BUFFSIZE;i++){
-                    //     std::cout<< m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
-                    // }
-                    // std::cout << std::endl;
+                    std::map<int32_t, User>::iterator iter;
+                    int32_t iMessageLength;
+                    Message iMessage;
+
+                    m_Serializer.read(m_user_map[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE);
+                    while(m_Serializer.deserialize() > 0){
+
+                        std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
+                        iter = m_user_map.begin();
+    				    while(iter != m_user_map.end()) {
+                            iMessage.set_to(iter->first);
+                            iMessage.set_from(m_Serializer.m_Message.from());
+                            iMessage.set_data(m_Serializer.m_Message.data());
+
+                            memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
+                            iMessageLength = m_Serializer.serialize(iMessage, iter->second.m_sendbuf);
+                            send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+            			    fprintf(stderr,"[server] send to: %d\n\n", iter->first);
+        				    iter++;
+    				    }
+                    }
+
+
 
                     int32_t iMessageLength;
                     Message iMessage;
