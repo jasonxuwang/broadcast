@@ -54,6 +54,8 @@ class Serializer{
         int32_t deserialize(); // 
         Message getMessage(); // return the member message;
         void reset();
+        int32_t encode_int32(char *iBuff,  int32_t iMessageLength) ;
+        int32_t decode_int32(char *iBuff) ;
 
 
     private:
