@@ -31,7 +31,6 @@ void TCPClient::init(){
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_epoll.epoll_add(STDIN_FILENO);
     m_Serializer.reset();
-
 }
 
 
@@ -44,8 +43,6 @@ void TCPClient::run(){
     }
 }
 
-
-
 /*
     poll function performs one query, see if any incoming events are captureed. 
 */
@@ -57,14 +54,16 @@ void TCPClient::poll(){
     for (n=0; n<numfd;n++){
         m_epoll_event = m_epoll.get_event_by_id(n); // get event id
 
-        // if there is a message from server, simply print it out.
+        // if there is a message from server, update my id.
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
-            memset(m_recvbuf, '\0', BUFFSIZE);
+
+            memset(m_recvbuf, '\0', BUFFSIZE); // clear receive buffer
+
+            // server tell me my id, update.
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-                // 如果读取到信息
-                // std::cout << "recv buffer is now : " << m_recvbuf << "\n";
                 m_Serializer.read(m_recvbuf, BUFFSIZE);
                 while(m_Serializer.deserialize() > 0){
+                    m_id = m_Serializer.m_Message.to();
                     std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
                 }
                 m_Serializer.reset();
@@ -73,38 +72,21 @@ void TCPClient::poll(){
         // if user input, read it into buffer and send to server.
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_recvbuf, '\0', BUFFSIZE);
-                gets(m_recvbuf);
+                gets(m_recvbuf); // TODO: switch to a safer approach
 
+                // if user input some data
                 if (strlen(m_recvbuf) > 0 ){
-                        // tes
-                        std::cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
+                        // construct message  
                         Message iMessage;
                         iMessage.set_data(std::string(m_recvbuf));
-                        iMessage.set_to(-1);
-                        iMessage.set_from(2);
+                        iMessage.set_to(0);
+                        iMessage.set_from(m_id);
 
+                        // serialize to m_sendbuf
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
-                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf<< std::endl;
 
-                        // test
-                        Message iMessage2;
-                        int32_t iMessageLength2;
-                        iMessage2.set_data("Test serialize");
-                        iMessage2.set_to(-1);
-                        iMessage2.set_from(2); 
-
-                        iMessageLength2 = m_Serializer.serialize(iMessage2, m_sendbuf+iMessageLength+sizeof(int32_t));
-                        // print all in sendbuf
-
-                        int i ;
-                        for (i=0;i<BUFFSIZE;i++){
-                            std::cout << m_sendbuf[i];
-                        }
-                        std::cout << std::endl;
-
-
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength+iMessageLength2 + 2*sizeof(int32_t) ,0);
-
+                        // send to server
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
                 }
 
         }else{

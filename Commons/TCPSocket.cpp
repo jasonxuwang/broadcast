@@ -24,10 +24,9 @@ int32_t TCPSocket::as_client(char* ipstr,int32_t port){
 
     int res = connect(m_socket_fd,(struct sockaddr *)&m_client_addr,sizeof(m_client_addr));	
     if (res < 0){
-         perror("tcp socket: connection failed");
+        perror("tcp socket: connection failed");
         exit(EXIT_FAILURE);    
     }
-	std::cout << "[client] connected to the server !!! \n";
 }
 
 
@@ -40,7 +39,6 @@ int32_t TCPSocket::as_server(int32_t port){
     }
 
     // bind 
-
 	addrlen = 0;
     memset(&m_socket_addr, 0, sizeof(m_socket_addr)); // empty memory
         // set ip, port and size
@@ -58,13 +56,11 @@ int32_t TCPSocket::as_server(int32_t port){
         perror("tcp socket: listen failed");
         exit(EXIT_FAILURE);
     }
-	
     return m_socket_fd;
 }
 
 void TCPSocket::clear_buff(char* iBuff){
     memset(iBuff, '\0', BUFSIZE );
-
 }
 
 

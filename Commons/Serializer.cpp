@@ -1,5 +1,6 @@
 #include "Serializer.h"
 
+
 int32_t Serializer::encode_int32(char *iBuff,  int32_t iMessageLength) {
     char bytes[4];
     bytes[0] = (iMessageLength>>24) & 0xFF;
@@ -70,10 +71,8 @@ int32_t Serializer::serialize(Message iMessage, char* iBuffer){
 int32_t Serializer::deserialize(){
     // 先读长度.
     m_MessageLength = decode_int32(m_buffer+m_offset);
-    std::cout << "message length = " << m_MessageLength << "\n";
     if (m_MessageLength <=0) {
         //如果没有东西可读
-        std::cout << "nothing to read in deserialize";
         reset();
         return 0;
     }
