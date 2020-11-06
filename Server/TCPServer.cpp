@@ -47,6 +47,7 @@ void TCPServer::init(){
     m_TCPSocket.as_server(PORT);
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
+    m_Serializer.reset();
 }
 
 /* main loop, keep query events from epoll */
@@ -55,9 +56,6 @@ void TCPServer::run(){
         poll();
     }
 }
-
-
-
 
 /* single query events from epoll */
 void TCPServer::poll(){
@@ -79,7 +77,6 @@ void TCPServer::poll(){
                 memset( new_user.m_sendbuf, '\0', BUFFSIZE );
                 memset( new_user.m_recvbuf, '\0', BUFFSIZE );
                 
-				
 				// set non blocking 
 				int flags = fcntl(conn_sock, F_GETFL, 0);
 				if (fcntl(conn_sock, F_SETFL, flags | O_NONBLOCK) < 0){
@@ -87,56 +84,40 @@ void TCPServer::poll(){
 				}
 				m_epoll.epoll_add(conn_sock);
         
-		// if this is an incoming message from esiting connection
+		// if this is an incoming message from existing connection
 		}else{
         		memset( m_user_map[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE );
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
                     std::cout << "handling client" << "\n";
-                    // print full buffer
-                    int i;
-                    for (i=0;i<BUFFSIZE;i++){
-                        std::cout<< m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
-                    }
-                    std::cout << std::endl;
-
+                    std::map<int32_t, User>::iterator iter;
                     int32_t iMessageLength;
                     Message iMessage;
-                    std::map<int32_t, User>::iterator iter;
-                    int32_t offset = 0;
-                    do{
-                        std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd << std::endl ;
-                        iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset); // problem
-                        std::cout << "iMessageLength is now " <<  iMessageLength  << std::endl ;
 
-                        if (iMessageLength <= 0){
-                            break; 
+                        // print all for buffer
+                        int i ;
+                        for (i=0;i<BUFFSIZE;i++){
+                            std::cout << m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
                         }
-                        offset += sizeof(int32_t);
+                        std::cout << std::endl;
 
-                        get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset, iMessageLength, &iMessage );
-                        std::cout << "[server] From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
-                        offset +=iMessageLength;
-
-    				    iter = m_user_map.begin();
+                    m_Serializer.read(m_user_map[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE);
+                    while(m_Serializer.deserialize() > 0){
+                        
+                        std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
+                        iter = m_user_map.begin();
     				    while(iter != m_user_map.end()) {
                             iMessage.set_to(iter->first);
-                        // set buffer empty
+                            iMessage.set_from(m_Serializer.m_Message.from());
+                            iMessage.set_data(m_Serializer.m_Message.data());
+
                             memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
-                            int32_t iMessageLength = iMessage.ByteSizeLong();
-                        // construct header
-                            encode_int32(iter->second.m_sendbuf,iMessageLength );
-                            iMessage.SerializeToArray(iter->second.m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()); // TODO:caution overflow
-						    send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
-            			    fprintf(stderr,"[server] send to: %d\n\n", iter->first);
+                            iMessageLength = m_Serializer.serialize(iMessage, iter->second.m_sendbuf);
+                            send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+            			    fprintf(stderr,"[server] send to: %d\n", iter->first);
         				    iter++;
     				    }
-
-                    }while(iMessageLength>0);
-
-    
-		
-
+                    }
     			}else{
 					// if recv returns 0, close the connection and unregister the user
                     std::cout << "[server] Client " << m_epoll_event->data.fd << " left \n";
