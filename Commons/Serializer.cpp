@@ -84,7 +84,7 @@ int32_t Serializer::deserialize(){
         reset();
         return -1;
     }
-    m_offset += sizeof(m_MessageLength);
+    m_offset += m_MessageLength;
     return 1;
    
 
