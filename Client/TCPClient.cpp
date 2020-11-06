@@ -102,16 +102,19 @@ void TCPClient::poll(){
                         std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         // construct header
                         // clear send buffer
-                        memset(m_sendbuf, '\0', BUFFSIZE);
-                        encode_int32(m_sendbuf, iMessageLength);
-                        
-                        // add header byte 
-                        if (!iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()) ){
-                            std::cout << "2 serailzation failed!! \n";
-                        } // TODO:caution overflow
+                        m_Serializer.serialize(iMessage, m_sendbuf);
 
-                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
+
+
+                        // memset(m_sendbuf, '\0', BUFFSIZE);
+                        // encode_int32(m_sendbuf, iMessageLength);
+                        // // add header byte 
+                        // if (!iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()) ){
+                        //     std::cout << "2 serailzation failed!! \n";
+                        // } // TODO:caution overflow
+
+                        // std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
+                        // send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
                 }
 
         }else{
