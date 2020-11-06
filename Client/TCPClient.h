@@ -51,6 +51,7 @@ class TCPClient{
     public:
 
     private:
+        int32_t m_id;
         char m_sendbuf[BUFSIZE];
         char m_recvbuf[BUFSIZE];
         TCPSocket m_TCPSocket;

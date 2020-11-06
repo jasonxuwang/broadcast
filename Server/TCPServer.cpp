@@ -117,7 +117,7 @@ void TCPServer::poll(){
                         iter = m_user_map.begin();
 
 
-                        // logic broad cast to all clients
+                        // logic: broad cast to all clients
     				    while(iter != m_user_map.end()) {
                             iMessage.set_to(iter->first);
                             iMessage.set_from(m_Serializer.m_Message.from());
