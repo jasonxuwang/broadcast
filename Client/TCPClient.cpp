@@ -64,7 +64,7 @@ void TCPClient::poll(){
                 // 如果读取到信息
                 // std::cout << "recv buffer is now : " << m_recvbuf << "\n";
                 m_Serializer.read(m_recvbuf, BUFFSIZE);
-                while(m_Serializer.deserialize()){
+                while(m_Serializer.deserialize() > 0){
                     std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
                 }
                 // int iMessageLength = 0;
