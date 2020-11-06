@@ -33,6 +33,7 @@
 
 #include "../Protobuf/message.pb.h"
 #include "../Commons/MessageHead.h"
+#include "../Commons/utils.h"
 
 /**
  * Serialize buffered 
