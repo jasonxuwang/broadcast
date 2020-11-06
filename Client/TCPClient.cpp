@@ -86,7 +86,7 @@ void TCPClient::poll(){
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
                         std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t)<< std::endl;
 
-                        iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t));
+                        //iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t));
 
 
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, 2*(iMessageLength + sizeof(int32_t)) ,0);
