@@ -103,6 +103,8 @@ void TCPClient::poll(){
                         // construct header
                         // clear send buffer
                         m_Serializer.serialize(iMessage, m_sendbuf);
+                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
+                        
 
 
 
