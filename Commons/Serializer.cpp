@@ -57,7 +57,7 @@ int32_t Serializer::serialize(Message iMessage, char* iBuffer){
 
     // serailize message对象
     iMessage.SerializeToArray(iBuffer+sizeof(int32_t), tMessageLength); // 长度放到buffer中
-    
+
     return tMessageLength;
 						   
 } // convert message to char
@@ -72,7 +72,7 @@ int32_t Serializer::deserialize(){
     m_MessageLength = decode_int32(m_buffer+m_offset);
     if (m_MessageLength <0) {
         //如果没有东西可读
-        std::cout << "nothing to read in deserialize"
+        std::cout << "nothing to read in deserialize";
         reset();
         return 0;
     }
