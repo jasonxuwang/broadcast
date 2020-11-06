@@ -108,16 +108,18 @@ void TCPServer::poll(){
                     int32_t offset = 0;
                     do{
                         std::cout << "offset is now " <<  offset  << " for sockfd " << m_epoll_event->data.fd << std::endl ;
-                        iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset);
+                        iMessageLength = decode_int32(m_user_map[m_epoll_event->data.fd].m_recvbuf+offset); // problem
                         std::cout << "iMessageLength is now " <<  iMessageLength  << std::endl ;
 
                         if (iMessageLength <= 0){
                             break; 
                         }
+                        offset += sizeof(int32_t);
 
-                        get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
+                        get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset, iMessageLength, &iMessage );
                         std::cout << "[server] From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                         offset +=iMessageLength;
+                        
     				    iter = m_user_map.begin();
     				    while(iter != m_user_map.end()) {
                             iMessage.set_to(iter->first);

@@ -87,8 +87,10 @@ void TCPClient::poll(){
                     if (iMessageLength <= 0){
                             break;
                     }
-                    get_message(m_recvbuf+sizeof(int32_t)+offset, iMessageLength, &iMessage );
+                    offset += sizeof(int32_t);
+                    get_message(m_recvbuf+offset, iMessageLength, &iMessage );
                     offset+=iMessageLength;
+
                     std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                 }
                 while (iMessageLength > 0);
