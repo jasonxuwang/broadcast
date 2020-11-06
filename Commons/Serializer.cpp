@@ -1,6 +1,6 @@
 #include "Serializer.h"
 
-Serializer::int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
+int32_t Serializer::encode_int32(char *iBuff,  int32_t iMessageLength) {
     char bytes[4];
     bytes[0] = (iMessageLength>>24) & 0xFF;
     bytes[1] = (iMessageLength>>16) & 0xFF;
@@ -10,7 +10,7 @@ Serializer::int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
     return sizeof(int32_t);
 }
 
-Serializer::int32_t decode_int32(char *iBuff) {
+int32_t Serializer::decode_int32(char *iBuff) {
     int num = 0;
     for (int i=0;i<4;i++){
         num<<8;
