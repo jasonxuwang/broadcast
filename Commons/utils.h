@@ -36,15 +36,5 @@
 #include "Epoll.h"
 #include "TCPSocket.h"
 #include "../Protobuf/message.pb.h"
-#include "MessageHead.h"
 
 
-int32_t get_message_len(char* iBuffer, int32_t iHeaderLength);
-// int32_t encode_int32(char *iBuff,  int32_t iMessageLength) ;
-// int32_t decode_int32(char *iBuff) ;
-/**
- * Suppose iBuffer is the starter of the buffer
- * construct a message object
- * return the length of message.
- * */
-int32_t get_message(char* iBuffer, int32_t iMessageLength, Message* iMessage );
