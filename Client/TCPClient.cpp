@@ -67,21 +67,6 @@ void TCPClient::poll(){
                 while(m_Serializer.deserialize() > 0){
                     std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
                 }
-                // int iMessageLength = 0;
-                // Message iMessage;
-                // int offset = 0;
-                // do{
-                //     iMessageLength = decode_int32(m_recvbuf+offset);
-                //     if (iMessageLength <= 0){
-                //             break;
-                //     }
-                //     offset += sizeof(int32_t);
-                //     get_message(m_recvbuf+offset, iMessageLength, &iMessage );
-                //     offset+=iMessageLength;
-
-                    
-                // }
-                // while (iMessageLength > 0);
             }
 
         // if user input, read it into buffer and send to server.
@@ -99,20 +84,13 @@ void TCPClient::poll(){
 
 
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
-                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t)<< std::endl ;
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
+                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t)<< std::endl;
+
+                        iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t));
 
 
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, 2*(iMessageLength + sizeof(int32_t)) ,0);
 
-                        // memset(m_sendbuf, '\0', BUFFSIZE);
-                        // encode_int32(m_sendbuf, iMessageLength);
-                        // // add header byte 
-                        // if (!iMessage.SerializeToArray(m_sendbuf+sizeof(int32_t), iMessage.ByteSizeLong()) ){
-                        //     std::cout << "2 serailzation failed!! \n";
-                        // } // TODO:caution overflow
-
-                        // std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
-                        // 
                 }
 
         }else{
