@@ -98,8 +98,8 @@ void TCPClient::poll(){
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_recvbuf, '\0', BUFFSIZE);
                 gets(m_recvbuf);
-                if (strlen(m_recvbuf) > 0 ){
 
+                if (strlen(m_recvbuf) > 0 ){
                         // tes
                         std::cout << "2 now recvbuf is: " <<  m_recvbuf << "\n";
                         Message iMessage;
@@ -120,9 +120,8 @@ void TCPClient::poll(){
                             std::cout << "2 serailzation failed!! \n";
                         } // TODO:caution overflow
 
-                        //memcpy(m_sendbuf+iMessageLength + sizeof(int32_t) , m_sendbuf, iMessageLength + sizeof(int32_t));
 
-                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << std::endl ;
+                        std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t) << " which len= "<< strlen(m_sendbuf) <<std::endl ;
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf,iMessageLength + sizeof(int32_t) ,0);
                 }
 
