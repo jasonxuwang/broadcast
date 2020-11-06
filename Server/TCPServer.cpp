@@ -111,7 +111,7 @@ void TCPServer::poll(){
                             memset( iter->second.m_sendbuf, '\0', BUFFSIZE );
                             iMessageLength = m_Serializer.serialize(iMessage, iter->second.m_sendbuf);
                             send(iter->first, iter->second.m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
-            			    fprintf(stderr,"[server] send to: %d\n\n", iter->first);
+            			    fprintf(stderr,"[server] send to: %d\n", iter->first);
         				    iter++;
     				    }
                     }
