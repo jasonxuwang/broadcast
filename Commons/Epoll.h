@@ -1,7 +1,7 @@
 #ifndef _EPOLL_
 #define _EPOLL_
 
-#include "utils.h"
+#include "config.h"
 
 
 class Epoll{
