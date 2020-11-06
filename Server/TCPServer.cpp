@@ -104,7 +104,7 @@ void TCPServer::poll(){
                         if (iMessageLength <= 0){
                             break;
                         }
-                        
+
                         get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset+sizeof(int32_t), iMessageLength, &iMessage );
                         std::cout << "[client]  From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                         offset +=iMessageLength;
@@ -129,6 +129,7 @@ void TCPServer::poll(){
 
     			}else{
 					// if recv returns 0, close the connection and unregister the user
+                    std::cout << "[server] Client " << m_epoll_event->data.fd << " left \n";
 					m_epoll.epoll_close(m_epoll_event->data.fd); //?
 					m_user_map.erase(m_epoll_event->data.fd);
 				}

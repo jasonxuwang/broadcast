@@ -111,6 +111,8 @@ void TCPClient::poll(){
                         int32_t iMessageLength = iMessage.ByteSizeLong();
                         std::cout << "2 message len is: " <<  iMessageLength << "\n";
                         // construct header
+                        // clear send buffer
+                        memset(m_sendbuf, '\0', BUFFSIZE);
                         encode_int32(m_sendbuf, iMessageLength);
                         
                         // add header byte 
