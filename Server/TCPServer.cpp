@@ -6,28 +6,6 @@
 #define MAXEVENT 100
 #define BUFFSIZE 1024
 
-
-int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
-    char bytes[4];
-    bytes[0] = (iMessageLength>>24) & 0xFF;
-    bytes[1] = (iMessageLength>>16) & 0xFF;
-    bytes[2] = (iMessageLength>>8) & 0xFF;
-    bytes[3] = (iMessageLength) & 0xFF;
-    memcpy(iBuff, bytes, sizeof(bytes));
-    return sizeof(int32_t);
-}
-
-int32_t decode_int32(char *iBuff) {
-    int num = 0;
-    for (int i=0;i<4;i++){
-        num<<8;
-        num |= iBuff[i];
-    }
-    return num;
-}
-
-
-
 // An implementation of TCP server
 TCPServer::TCPServer(){
 
@@ -119,7 +97,7 @@ void TCPServer::poll(){
                         get_message(m_user_map[m_epoll_event->data.fd].m_recvbuf+ offset, iMessageLength, &iMessage );
                         std::cout << "[server] From " << iMessage.from() <<  ": "<< iMessage.data() <<"\n";
                         offset +=iMessageLength;
-                        
+
     				    iter = m_user_map.begin();
     				    while(iter != m_user_map.end()) {
                             iMessage.set_to(iter->first);
