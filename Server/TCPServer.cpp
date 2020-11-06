@@ -100,7 +100,7 @@ void TCPServer::poll(){
                     for (i=0;i<BUFFSIZE;i++){
                         std::cout<< m_user_map[m_epoll_event->data.fd].m_recvbuf[i];
                     }
-                    std::cout << std::end;
+                    std::cout << std::endl;
 
                     int32_t iMessageLength;
                     Message iMessage;
