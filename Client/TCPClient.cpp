@@ -56,7 +56,6 @@ void TCPClient::poll(){
     // process each event
     for (n=0; n<numfd;n++){
         m_epoll_event = m_epoll.get_event_by_id(n); // get event id
-        
         // if there is a message from server, simply print it out.
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
             memset(m_recvbuf, '\0', BUFFSIZE);
@@ -85,8 +84,15 @@ void TCPClient::poll(){
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
                         std::cout <<  "[client] sendbuf now is :" << m_sendbuf+sizeof(int32_t)<< std::endl;
 
-                        //iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t));s
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
+
+                        Message iMessage2;
+                        iMessage2.set_data("Test serialize");
+                        iMessage2.set_to(-1);
+                        iMessage2.set_from(2); 
+
+                        iMessageLength = m_Serializer.serialize(iMessage2, m_sendbuf+iMessageLength+sizeof(int32_t));
+
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, BUFFSIZE ,0);
 
                 }
 
