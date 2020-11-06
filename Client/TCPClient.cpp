@@ -102,12 +102,12 @@ void TCPClient::poll(){
 
 
                                                 int i ;
-                        for (i=0;i<m_sendbuf;i++){
+                        for (i=0;i<BUFFSIZE;i++){
                             std::cout << m_sendbuf[i];
                         }
                         std::cout << std::endl;
 
-                        
+
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, 2 *(iMessageLength+sizeof(int32_t)) ,0);
 
                 }
