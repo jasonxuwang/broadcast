@@ -26,7 +26,6 @@
 #include <iostream>
 // #include "message.pb.h"
 #include "../Protobuf/message.pb.h"
-#include "../Commons/MessageHead.h"
 #include "../Commons/utils.h"
 #include "../Commons/Serializer.h"
 
