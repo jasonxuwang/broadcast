@@ -117,7 +117,7 @@ void TCPGate::poll(){
 
 
             // 判断是从哪里来
-            if (m_clients.find(m_epoll_event->data.fd) != mymap.end()) {  //如果是从client来
+            if (m_clients.find(m_epoll_event->data.fd) != m_clients.end()) {  //如果是从client来
                     std::cout << "[gate] msg from client " <<m_epoll_event->data.fd << "\n";  
                     // 解包
 
@@ -156,7 +156,7 @@ void TCPGate::poll(){
                     
         		 
 
-            }else if(m_servers.find(m_epoll_event->data.fd) != mymap.end()){ // 如果是从server来
+            }else if(m_servers.find(m_epoll_event->data.fd) != m_servers.end()){ // 如果是从server来
                     std::cout << "[gate] msg from server " <<m_epoll_event->data.fd << "\n";  
 
 
