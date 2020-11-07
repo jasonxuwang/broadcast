@@ -1,5 +1,10 @@
 #include "Server/TCPServer.h"
 
+
+Logger logger;
+logger.setfile("server.log");
+
+
 int main(){
 
     TCPServer myServer;

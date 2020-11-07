@@ -5,6 +5,7 @@
 void Logger::setfile(std::string filename){
     // concat folder and filename 
     m_fout.open(filename+LOG_FOLDER);
+    log("Logger started", INFO);
 }
 
 Logger::~Logger(){
