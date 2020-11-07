@@ -117,11 +117,11 @@ void TCPGate::poll(){
 
 
             // 判断是从哪里来
-            if (m_clients.find(m_epoll_event->data.fd) != m_clients.end()) {  //如果是从client来
+
+            //如果是从client来
+            if (m_clients.find(m_epoll_event->data.fd) != m_clients.end()) {  
                     std::cout << "[gate] msg from client " <<m_epoll_event->data.fd << "\n";  
-                    // 解包
-
-
+                // 解包
                 if ( recv(m_epoll_event->data.fd, m_clients[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
                         std::map<int32_t, Clients>::iterator iter;
@@ -134,8 +134,11 @@ void TCPGate::poll(){
                         // deal with 粘包
                         // if the serializer can decode message object from the buffer
                         while(m_Serializer.deserialize() > 0){
+
                             // 如果decode到一个message，发给server
                             std::cout << "[gate]  Message From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
+
+                            // TODO: 转发给server
                             std::cout << "[gate]  Transform To " << m_clients[m_epoll_event->data.fd].server_fd <<"\n";
                             
 
@@ -151,20 +154,18 @@ void TCPGate::poll(){
 					m_clients.erase(m_epoll_event->data.fd);
 				}
 
-
-
-                    
-        		 
-
-            }else if(m_servers.find(m_epoll_event->data.fd) != m_servers.end()){ // 如果是从server来
+            // 如果是从server来
+            }else if(m_servers.find(m_epoll_event->data.fd) != m_servers.end()){ 
                     std::cout << "[gate] msg from server " <<m_epoll_event->data.fd << "\n";  
-                    memset(m_servers[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE); // clear receive buffer
-                    if (recv(m_epoll_event->data.fd, m_servers[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE,0) != 0){
-                        m_Serializer.read(m_servers[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE);
-                    while(m_Serializer.deserialize() > 0){
-                        std::cout << "[gate]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
-                    }
-                    m_Serializer.reset();
+                    //TODO: 群发给所有client
+
+                    // memset(m_servers[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE); // clear receive buffer
+                    // if (recv(m_epoll_event->data.fd, m_servers[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE,0) != 0){
+                    //     m_Serializer.read(m_servers[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE);
+                    //     while(m_Serializer.deserialize() > 0){
+                    //         std::cout << "[gate]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
+                    // }
+                    // m_Serializer.reset();
             }
 
 
