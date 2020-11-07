@@ -24,7 +24,7 @@ void TCPServer::init(){
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_Serializer.reset();
-    m_Logger = m_Logger(LOG_FOLDER+LOG_SERVER_FILE);
+    m_Logger = m_Logger(std::string(LOG_FOLDER)+LOG_SERVER_FILE);
 }
 
 /* main loop, keep query events from epoll */
