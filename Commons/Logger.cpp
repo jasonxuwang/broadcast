@@ -4,7 +4,7 @@
 
 void Logger::setfile(std::string filename){
     // concat folder and filename 
-    m_fout.open(filename+LOG_FOLDER, std::fstream::in | std::fstream::out | std::fstream::trunc);
+    m_fout.open(filename, std::fstream::in | std::fstream::out | std::fstream::trunc);
     log("Logger started", INFO);
 }
 
