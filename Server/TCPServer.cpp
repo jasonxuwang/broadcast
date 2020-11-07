@@ -11,26 +11,6 @@ TCPServer::~TCPServer(){
     
 }
 
-
-int32_t encode_int32(char *iBuff,  int32_t iMessageLength) {
-    char bytes[4];
-    bytes[0] = (iMessageLength>>24) & 0xFF;
-    bytes[1] = (iMessageLength>>16) & 0xFF;
-    bytes[2] = (iMessageLength>>8) & 0xFF;
-    bytes[3] = (iMessageLength) & 0xFF;
-    memcpy(iBuff, bytes, sizeof(bytes));
-    return sizeof(int32_t);
-}
-
-int32_t decode_int32(char *iBuff) {
-    int num = 0;
-    for (int i=0;i<4;i++){
-        num<<8;
-        num |= iBuff[i];
-    }
-    return num;
-}
-
 /*
     Init function creates required objects for a TCP server including:
         1 a TCP socket
@@ -44,6 +24,7 @@ void TCPServer::init(){
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_Serializer.reset();
+    m_Logger = m_Logger(LOG_FOLDER+LOG_FILE);
 }
 
 /* main loop, keep query events from epoll */
