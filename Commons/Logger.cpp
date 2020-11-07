@@ -16,6 +16,11 @@ Logger::~Logger(){
 
 }
 
+Logger::Logger(){
+    
+
+}
+
 
 void Logger::close(){
     m_fout.close();
