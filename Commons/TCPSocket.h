@@ -13,18 +13,17 @@ class TCPSocket{
 
     private:
         int32_t m_socket_fd, addrlen;
-        char recvbuf[BUFFSIZE], sendbuf[BUFFSIZE];
+        char m_recvbuf[BUFFSIZE], m_sendbuf[BUFFSIZE];
         struct sockaddr_in m_socket_addr;
 	    struct sockaddr_in m_client_addr;
+
 
     public:
         int32_t as_server(int32_t port);
         int32_t as_client(char* ipstr,int32_t port);
         int32_t get_socket_fd();
         // wrapper for socket functions
-        void clear_buff(char* iBuff);
-        int32_t accept_conn();
-        
+        int32_t accept_conn(); 
     private:
         
 
