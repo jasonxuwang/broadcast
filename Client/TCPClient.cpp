@@ -17,8 +17,8 @@ TCPClient::~TCPClient(){
         1 socket file descriptor of connection with server.
         2 stdin (user input).
 */
-void TCPClient::init(){
-    m_TCPSocket.as_client(IPSTR,PORT);
+void TCPClient::init(char* ipstr,int32_t port){
+    m_TCPSocket.as_client(ipstr,port);
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_epoll.epoll_add(STDIN_FILENO);
@@ -78,7 +78,7 @@ void TCPClient::poll(){
                         memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
                         //int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t)); // 粘包测试
-                        
+
                         // send to server
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0); 
                         //send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + iMessageLength2 + sizeof(int32_t)+ sizeof(int32_t) ,0);// 粘包测试

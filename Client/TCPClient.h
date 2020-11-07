@@ -15,7 +15,7 @@ class TCPClient{
     public:
         TCPClient();
         ~TCPClient();
-        void init();
+        void init(char* ipstr,int32_t port);
         void poll();
         void run();
     private:
