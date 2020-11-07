@@ -24,7 +24,7 @@ void TCPServer::init(){
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_Serializer.reset();
-    m_Logger.setfile("server.log");
+    m_Logger.setfile("/Server/server.log");
 }
 
 /* main loop, keep query events from epoll */
@@ -46,6 +46,7 @@ void TCPServer::poll(){
         // if this is a new client
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
 				int32_t conn_sock = m_TCPSocket.Accept();
+                m_Logger.log( std::string("New client connected, ID= ") + conn_sock , INFO);
 				std::cout << "new client connected ! \n";
 
 				// record a client to user map
