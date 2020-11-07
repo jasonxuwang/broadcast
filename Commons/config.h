@@ -46,8 +46,6 @@
 #define MAXEVENT 100
 #define BUFFSIZE 1024*8
 
-#define LOG_SERVER_FILE "server.log"
-#define LOG_CLIENT_FILE "client.log"
 #define LOG_FOLDER "./logs/"
 #define LOG_PRINT_ABOVE -1 // print every thing above
 #define LOG_SAVE_ABOVE 0 // only log level > INFO

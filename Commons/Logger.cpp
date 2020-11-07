@@ -2,13 +2,9 @@
 
 
 
-Logger::Logger(std::string filename){
-    m_log_level_map[-1] = "[DEBUG] ";
-    m_log_level_map[0] = "[INFO] ";
-    m_log_level_map[1] = "[WARN] ";
-    m_log_level_map[2] = "[ERROR] ";
-    m_fout.open(filename);
-
+void Logger::setfile(std::string filename){
+    // concat folder and filename 
+    m_fout.open(filename+LOG_FOLDER);
 }
 
 Logger::~Logger(){
@@ -17,7 +13,10 @@ Logger::~Logger(){
 }
 
 Logger::Logger(){
-    
+    m_log_level_map[-1] = "[DEBUG] ";
+    m_log_level_map[0] = "[INFO] ";
+    m_log_level_map[1] = "[WARN] ";
+    m_log_level_map[2] = "[ERROR] ";
 
 }
 
