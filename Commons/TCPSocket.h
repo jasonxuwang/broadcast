@@ -22,12 +22,12 @@ class TCPSocket{
         int32_t as_server(int32_t port);
         int32_t as_client(char* ipstr,int32_t port);
         int32_t get_socket_fd();
-        
+
         // wrapper for socket functions
         int32_t Accept(); 
         int32_t Socket(); 
-        int32_t Bind(); 
-        int32_t Connect(); 
+        int32_t Bind(char* ipstr,int32_t port); 
+        int32_t Connect(char* ipstr,int32_t port); 
         int32_t Listen(); 
 
     private:
