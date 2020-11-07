@@ -27,18 +27,27 @@
 #include <iostream>
 
 
+#include <stdint.h>
+#include <iostream>
+#include <fstream>
+
+
+
 #include "Epoll.h"
 #include "TCPSocket.h"
 #include "../Protobuf/message.pb.h"
 
 
-
+#define IPSTR "127.0.0.1"
 #define PORT 10009
+
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024*8
-#define IPSTR "127.0.0.1"
 
 
+#define LOG_FOLDER "./logs/"
+#define LOG_PRINT_ABOVE -1 // print every thing above
+#define LOG_SAVE_ABOVE 0 // only log level > INFO
 
 
