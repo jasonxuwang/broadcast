@@ -33,7 +33,7 @@ int32_t TCPSocket::Listen(){
     return 0;
 }
 
-int32_t TCPSocket::Bind(int32_t port,char* ipstr){
+int32_t TCPSocket::Bind(char* ipstr , int32_t port){
 
     memset(&m_socket_addr, 0, sizeof(m_socket_addr)); // empty memory
     m_socket_addr.sin_family = AF_INET; // set protocol
@@ -48,7 +48,7 @@ int32_t TCPSocket::Bind(int32_t port,char* ipstr){
     return 0;
 }
 
-int32_t TCPSocket::Connect(int32_t port,char* ipstr){
+int32_t TCPSocket::Connect(char* ipstr , int32_t port){
     memset(&m_client_addr, 0, sizeof(m_client_addr)); // empty memory
 	m_client_addr.sin_family = AF_INET; // set protocol
 	m_client_addr.sin_port = htons(port); // set port
