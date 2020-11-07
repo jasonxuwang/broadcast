@@ -4,7 +4,7 @@
 
 // An implementation of TCP server
 TCPGate::TCPGate(){
-    serverInfos= {ServerInfo("127.0.0.1", 9990) ,ServerInfo("127.0.0.1", 9991)};
+    serverInfos= {[0]=ServerInfo("127.0.0.1", 9990) , [1]=ServerInfo("127.0.0.1", 9991)};
 }
 
 TCPGate::~TCPGate(){
@@ -22,17 +22,17 @@ TCPGate::~TCPGate(){
 
 void TCPGate::connect_servers(std::string conf_path){
     // read server info from server.conf 
-    for (int i = 0; i < sizeof(serverInfos) / sizeof(ServerInfo), i++ ){
+    for (int i = 0; i < sizeof(serverInfos) / sizeof(ServerInfo); i++ ){
         // create socket
         TCPSocket tsock;
-        tsock.as_client(serverInfos[i]->ipstr,serverInfos[i]->port);
+        tsock.as_client(serverInfos[i]->ipstr.c_str(),serverInfos[i]->port);
         if (tsock.get_socket_fd() <0){
-            std::cout << "connect to server "  <<   serverInfos[i]->ipstr<<  " " <<  serverInfos[i]->port  <<"error!\n"
+            std::cout << "connect to server "  <<   serverInfos[i]->ipstr<<  " " <<  serverInfos[i]->port  <<"error!\n";
         }else{
             Servers serv;
             serv.server_id = i;
             serv.m_sock = tsock;
-            std::cout << "connected to server "  <<   serverInfos[i]->ipstr<<  " " <<  serverInfos[i]->port  <<"!\n"
+            std::cout << "connected to server "  <<   serverInfos[i]->ipstr<<  " " <<  serverInfos[i]->port  <<"!\n";
             // add this server to servers
             m_servers[i] = serv;
 
@@ -47,7 +47,7 @@ void TCPGate::init(){
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT); // Epoll处理所有socket的事件
     m_epoll.epoll_add(m_ClientsHanldeSocket.get_socket_fd()); // 监听用户连接的socket加入Epoll
 
-    connect_servers(); //尝试与所有服务器建立连接
+    connect_servers("./Server/servers.conf"); //尝试与所有服务器建立连接
     m_Serializer.reset();
     m_Logger.setfile("/Server/gate.log");
 }
