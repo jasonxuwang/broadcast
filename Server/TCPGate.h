@@ -37,7 +37,7 @@ class TCPGate{
         void run();
         void init();
         void poll();
-        void TCPGate::connect_servers()
+        void connect_servers();
 
 }
     private:
