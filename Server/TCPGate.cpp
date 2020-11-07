@@ -91,11 +91,11 @@ void TCPGate::poll(){
 
                 // store this client to user map
 				Clients new_client;
-				new_client.id = conn_sock;
+				new_client.client_id = conn_sock;
                 memset( new_client.m_sendbuf, '\0', BUFFSIZE );
                 memset( new_client.m_recvbuf, '\0', BUFFSIZE );
                 // assign a server for this client。 TODO:分配逻辑需要改进
-                new_client.server_fd = m_servers[conn_sock%2].m_sock.get_sock_fd();
+                new_client.server_fd = m_servers[conn_sock%2].m_sock.get_socket_fd();
                 std::cout << "server assigned to this client is "<< new_client.server_fd  << "\n";
                 m_clients[conn_sock] = new_client;
 
