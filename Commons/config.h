@@ -36,7 +36,7 @@
 
 #define IPSTR "127.0.0.1"
 #define PORT 10009
-#define GATE_PORT 8999
+#define GATE_PORT 7999
 #define TIMEOUT 1000
 #define MAXEVENT 100
 #define BUFFSIZE 1024*8
