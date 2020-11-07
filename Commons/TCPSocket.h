@@ -3,7 +3,6 @@
 #define _TCPSOCKET_
 
 #include "utils.h"
-#define BUFSIZE 1024
 
 class TCPSocket{
 

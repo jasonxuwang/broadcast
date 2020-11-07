@@ -3,8 +3,6 @@
 #include "../Commons/utils.h"
 #include "../Commons/Serializer.h"
 
-#define BUFSIZE 1024
-
 struct User{
 	int32_t id;
     char m_sendbuf[BUFSIZE];

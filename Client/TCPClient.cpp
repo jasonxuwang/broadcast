@@ -1,15 +1,5 @@
 #include "TCPClient.h"
 
-
-#define PORT 10009
-#define TIMEOUT 1000
-#define MAXEVENT 100
-#define BUFFSIZE 1024
-#define IPSTR "127.0.0.1"
-
-
-
-
 // An implementation of TCP client
 TCPClient::TCPClient(){
 

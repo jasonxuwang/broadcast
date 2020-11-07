@@ -1,9 +1,6 @@
 #include "TCPServer.h"
 
 // //
-#define PORT 10009
-#define TIMEOUT 1000
-#define MAXEVENT 100
 
 // An implementation of TCP server
 TCPServer::TCPServer(){

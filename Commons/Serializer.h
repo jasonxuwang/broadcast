@@ -4,8 +4,6 @@
 
 #include <stdint.h>
 
-#define BUFSIZE 1024
-
 
 #include "../Protobuf/message.pb.h"
 #include "../Commons/utils.h"
