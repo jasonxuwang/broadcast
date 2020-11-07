@@ -2,7 +2,7 @@
 
 
 
-Logger::Logger(char* filename){
+Logger::Logger(std::string filename){
     m_log_level_map[-1] = "[DEBUG] ";
     m_log_level_map[0] = "[INFO] ";
     m_log_level_map[1] = "[WARN] ";

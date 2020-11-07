@@ -12,7 +12,7 @@ enum Log_Level{
 class Logger{
     public:
         ~Logger();
-        Logger(std::tring filename);
+        Logger(std::string filename);
 
         void close();
         int32_t log( std::string out , Log_Level iLogLevel = INFO);
