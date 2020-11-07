@@ -158,7 +158,14 @@ void TCPGate::poll(){
 
             }else if(m_servers.find(m_epoll_event->data.fd) != m_servers.end()){ // 如果是从server来
                     std::cout << "[gate] msg from server " <<m_epoll_event->data.fd << "\n";  
-
+                    memset(m_servers[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE); // clear receive buffer
+                    if (recv(m_epoll_event->data.fd, m_servers[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE,0) != 0){
+                        m_Serializer.read(m_servers[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE);
+                    while(m_Serializer.deserialize() > 0){
+                        std::cout << "[gate]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
+                    }
+                    m_Serializer.reset();
+            }
 
 
             }else{ //不是client也不是server
