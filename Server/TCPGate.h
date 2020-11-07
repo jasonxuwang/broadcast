@@ -54,7 +54,7 @@ class TCPGate{
         struct epoll_event * m_epoll_event; 
         std::map<int32_t, Clients> m_clients;
         std::map<int32_t, Servers> m_servers;
-        ServerInfo serverInfos[1] = {[0]=ServerInfo("127.0.0.1", 9990)};
+        ServerInfo serverInfos[1] = {[0]=ServerInfo("127.0.0.1", 10009)};
         Serializer m_Serializer;
         Logger m_Logger;
 
