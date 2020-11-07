@@ -19,8 +19,8 @@ TCPServer::~TCPServer(){
         1 current socket file descriptor.
 
 */
-void TCPServer::init(){
-    m_TCPSocket.as_server(PORT);
+void TCPServer::init(int32_t port){
+    m_TCPSocket.as_server(port);
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_Serializer.reset();
