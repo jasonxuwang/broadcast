@@ -25,14 +25,14 @@ void TCPGate::connect_servers(std::string conf_path){
     for (int i = 0; i < sizeof(serverInfos) / sizeof(ServerInfo); i++ ){
         // create socket
         TCPSocket tsock;
-        tsock.as_client(serverInfos[i]->ipstr.c_str(),serverInfos[i]->port);
+        tsock.as_client(serverInfos[i].ipstr.c_str(),serverInfos[i].port);
         if (tsock.get_socket_fd() <0){
-            std::cout << "connect to server "  <<   serverInfos[i]->ipstr<<  " " <<  serverInfos[i]->port  <<"error!\n";
+            std::cout << "connect to server "  <<   serverInfos[i].ipstr<<  " " <<  serverInfos[i].port  <<"error!\n";
         }else{
             Servers serv;
             serv.server_id = i;
             serv.m_sock = tsock;
-            std::cout << "connected to server "  <<   serverInfos[i]->ipstr<<  " " <<  serverInfos[i]->port  <<"!\n";
+            std::cout << "connected to server "  <<   serverInfos[i].ipstr<<  " " <<  serverInfos[i].port  <<"!\n";
             // add this server to servers
             m_servers[i] = serv;
 
