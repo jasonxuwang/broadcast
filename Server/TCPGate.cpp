@@ -43,7 +43,7 @@ void TCPGate::connect_servers(std::string conf_path){
 }
 
 void TCPGate::init(){
-    m_ClientsHanldeSocket.as_server(PORT); // 负责监听用户新连接
+    m_ClientsHanldeSocket.as_server(GATE_PORT); // 负责监听用户新连接
     std::cout << "Client handling socket established!";
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT); // Epoll处理所有socket的事件
     m_epoll.epoll_add(m_ClientsHanldeSocket.get_socket_fd()); // 监听用户连接的socket加入Epoll
