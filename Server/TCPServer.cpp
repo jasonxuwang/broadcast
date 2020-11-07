@@ -64,7 +64,7 @@ void TCPServer::poll(){
 
         // if this is a new client
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
-				int32_t conn_sock = m_TCPSocket.accept_conn();
+				int32_t conn_sock = m_TCPSocket.Accept();
 				std::cout << "new client connected ! \n";
 
 				// record a client to user map
