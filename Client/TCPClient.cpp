@@ -78,10 +78,10 @@ void TCPClient::poll(){
                         memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
                         
-                        int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength);
+                        int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t));
 
                         // send to server
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength +iMessageLength2 + sizeof(int32_t)+ sizeof(int32_t) ,0);
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + iMessageLength2 + sizeof(int32_t)+ sizeof(int32_t) ,0);
         
 
                 }
