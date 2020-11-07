@@ -60,7 +60,7 @@ int32_t TCPSocket::as_server(int32_t port){
 }
 
 void TCPSocket::clear_buff(char* iBuff){
-    memset(iBuff, '\0', BUFSIZE );
+    memset(iBuff, '\0', BUFFSIZE );
 }
 
 

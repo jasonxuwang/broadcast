@@ -5,8 +5,8 @@
 
 struct User{
 	int32_t id;
-    char m_sendbuf[BUFSIZE];
-    char m_recvbuf[BUFSIZE];
+    char m_sendbuf[BUFFSIZE];
+    char m_recvbuf[BUFFSIZE];
 };
 
 
@@ -25,8 +25,8 @@ class TCPServer{
     public:
 
     private:
-        char m_sendbuf[BUFSIZE];
-        char m_recvbuf[BUFSIZE];
+        char m_sendbuf[BUFFSIZE];
+        char m_recvbuf[BUFFSIZE];
         TCPSocket m_TCPSocket;
         Epoll m_epoll;
         int32_t m_epoll_fd;

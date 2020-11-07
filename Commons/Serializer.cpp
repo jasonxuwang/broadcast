@@ -41,7 +41,7 @@ int32_t Serializer::read(char* iBuffer, int32_t iSize){
 
 
 void Serializer::reset(){
-    memset(m_buffer, '\0', BUFSIZE);     // empty buffer first 
+    memset(m_buffer, '\0', BUFFSIZE);     // empty buffer first 
     m_MessageLength = 0;
     m_offset = 0;
 }

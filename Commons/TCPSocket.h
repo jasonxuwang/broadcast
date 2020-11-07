@@ -13,7 +13,7 @@ class TCPSocket{
 
     private:
         int32_t m_socket_fd, addrlen;
-        char recvbuf[BUFSIZE], sendbuf[BUFSIZE];
+        char recvbuf[BUFFSIZE], sendbuf[BUFFSIZE];
         struct sockaddr_in m_socket_addr;
 	    struct sockaddr_in m_client_addr;
 
