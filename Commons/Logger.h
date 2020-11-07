@@ -1,4 +1,9 @@
 
+#ifndef _LOGGER_
+#define _LOGGER_
+
+
+
 #include "utils.h"
 
 
@@ -22,3 +27,5 @@ class Logger{
         std::map<int32_t, std::string> m_log_level_map;
 
 };
+
+#endif
