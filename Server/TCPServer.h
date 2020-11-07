@@ -17,7 +17,7 @@ class TCPServer{
         TCPServer();
         ~TCPServer();
         void run();
-        void init();
+        void init(int32_t port);
         void poll();
     private:
 
