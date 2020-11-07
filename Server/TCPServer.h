@@ -33,5 +33,7 @@ class TCPServer{
         struct epoll_event * m_epoll_event; 
         std::map<int32_t, User> m_user_map;
         Serializer m_Serializer;
-      
+        Logger m_Logger;
+
+        
 };

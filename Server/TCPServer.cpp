@@ -20,12 +20,11 @@ TCPServer::~TCPServer(){
 
 */
 void TCPServer::init(){
-
     m_TCPSocket.as_server(PORT);
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_Serializer.reset();
-   
+    m_Logger.setfile("server.log");
 }
 
 /* main loop, keep query events from epoll */
