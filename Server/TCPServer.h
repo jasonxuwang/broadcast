@@ -34,6 +34,6 @@ class TCPServer{
         std::map<int32_t, User> m_user_map;
         Serializer m_Serializer;
         Logger m_Logger;
-};
+
         
 };
