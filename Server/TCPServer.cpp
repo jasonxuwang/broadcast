@@ -46,8 +46,7 @@ void TCPServer::poll(){
         // if this is a new client
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
 				int32_t conn_sock = m_TCPSocket.Accept();
-                m_Logger.log( std::string("New client connected, ID= ") + conn_sock , INFO);
-				std::cout << "new client connected ! \n";
+                m_Logger.log( "New client connected !" , INFO);
 
 				// record a client to user map
 				User new_user;
@@ -59,12 +58,12 @@ void TCPServer::poll(){
 				// set non blocking 
 				int flags = fcntl(conn_sock, F_GETFL, 0);
 				if (fcntl(conn_sock, F_SETFL, flags | O_NONBLOCK) < 0){
-					std::cout << "set non blocking failed \n";
+                    m_Logger.log(  "set non blocking failed \n" , INFO);
 				}
 
                 // make epoll listening to conn_sock
 				if (m_epoll.epoll_add(conn_sock) < 0){
-                    std::cout << "epoll add error for socket " << conn_sock << std::endl;
+                    m_Logger.log(  "set non blocking failed \n" , INFO);
                     continue;
                 }
                 

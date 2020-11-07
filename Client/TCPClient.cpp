@@ -81,6 +81,10 @@ void TCPClient::poll(){
 
                         // send to server
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
                 }
 
         }else{
