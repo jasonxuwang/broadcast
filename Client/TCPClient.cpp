@@ -75,6 +75,7 @@ void TCPClient::poll(){
                         iMessage.set_from(m_id);
 
                         // serialize to m_sendbuf
+                        memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
 
                         // print send buf
