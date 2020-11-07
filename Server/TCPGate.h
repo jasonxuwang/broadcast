@@ -39,7 +39,7 @@ class TCPGate{
         void poll();
         void connect_servers();
 
-}
+
     private:
 
 
