@@ -4,8 +4,7 @@
 
 // An implementation of TCP server
 TCPGate::TCPGate(){
-    serverInfos[0] = ServerInfo("127.0.0.1", 9990);
-    serverInfos[1] = ServerInfo("127.0.0.1", 9991);
+    serverInfos= {ServerInfo("127.0.0.1", 9990) ,ServerInfo("127.0.0.1", 9991)};
 }
 
 TCPGate::~TCPGate(){
