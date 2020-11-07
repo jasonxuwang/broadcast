@@ -117,14 +117,14 @@ void TCPGate::poll(){
 
 
             // 判断是从哪里来
-            if (m_clients.find(m_epoll_event->dm_clientsata.fd) != mymap.end()) {  //如果是从client来
+            if (m_clients.find(m_epoll_event->data.fd) != mymap.end()) {  //如果是从client来
                     std::cout << "[gate] msg from client " <<m_epoll_event->data.fd << "\n";  
                     // 解包
 
 
                 if ( recv(m_epoll_event->data.fd, m_clients[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
-                        std::map<int32_t, User>::iterator iter;
+                        std::map<int32_t, Clients>::iterator iter;
                         int32_t iMessageLength;
                         Message iMessage;
 
