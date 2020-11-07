@@ -16,7 +16,7 @@ enum Log_Level{
 
 class Logger{
     public:
-        Logger::Logger();
+        Logger();
         ~Logger();
         Logger(std::string filename);
 
