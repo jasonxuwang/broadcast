@@ -74,7 +74,7 @@ int32_t TCPSocket::as_client(char* ipstr,int32_t port){
 int32_t TCPSocket::as_server(int32_t port){
     // create socket
     Socket();
-    Bind( "INADDR_ANY" ,  PORT);
+    Bind( "INADDR_ANY" ,  port);
     Listen();
     return m_socket_fd;
 }
