@@ -59,6 +59,9 @@ void TCPClient::poll(){
                     std::cout << "[client from " << m_Serializer.m_Message.from() <<  "] "<< m_Serializer.m_Message.data() <<"\n";
                 }
                 m_Serializer.reset();
+            }else{
+                perror("tcp server down");
+                exit(EXIT_FAILURE);
             }
 
         // if user input, read it into buffer and send to server.

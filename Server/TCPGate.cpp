@@ -181,7 +181,7 @@ void TCPGate::poll(){
 
             // 如果是从server来
             }else if(m_servers.find(m_epoll_event->data.fd) != m_servers.end()){ 
-                    std::cout << "[gate] msg from server " <<m_epoll_event->data.fd << "\n";  
+                    // std::cout << "[gate] msg from server " <<m_epoll_event->data.fd << "\n";  
                     //TODO: 群发给所有client
                     //清空该server fd的缓冲区以便接受数据
                     memset(m_servers[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE); // clear receive buffer
@@ -213,7 +213,16 @@ void TCPGate::poll(){
         				        iter++;
                             }
                         }
+                    }else{
+                        std::cout << "[gate] server " << m_epoll_event->data.fd << " has disconnected\n";
+                        if (m_epoll.epoll_close(m_epoll_event->data.fd) < 0){
+                            std::cout << "not closed properly! \n";
+                        }
+                        m_epoll.epoll_close(m_epoll_event->data.fd); //?
+                        m_servers.erase(m_epoll_event->data.fd);
                     }
+
+
                     m_Serializer.reset();
 
 

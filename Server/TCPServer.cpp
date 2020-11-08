@@ -77,13 +77,12 @@ void TCPServer::poll(){
         
 		// if this is an incoming message from existing connection
 		}else{
-                std::cout << "got some message!";
+                
                 // clear client buffer
         		memset( m_user_map[m_epoll_event->data.fd].m_recvbuf, '\0', BUFFSIZE );
 
                 // if read someting from kernel.
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
-
                     std::map<int32_t, User>::iterator iter;
                     int32_t iMessageLength;
                     Message iMessage;
