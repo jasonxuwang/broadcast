@@ -26,6 +26,7 @@ static void InitDefaultsscc_info_Message_message_2eproto() {
     new (ptr) ::Message();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
+  ::Message::InitAsDefaultInstance();
 }
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Message_message_2eproto =
@@ -75,6 +76,8 @@ static bool dynamic_init_dummy_message_2eproto = (static_cast<void>(::PROTOBUF_N
 
 // ===================================================================
 
+void Message::InitAsDefaultInstance() {
+}
 class Message::_Internal {
  public:
 };
@@ -90,7 +93,7 @@ Message::Message(const Message& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_data().empty()) {
-    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+    data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_data(),
       GetArena());
   }
   ::memcpy(&from_, &from.from_,
@@ -102,9 +105,8 @@ Message::Message(const Message& from)
 void Message::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Message_message_2eproto.base);
   data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-      reinterpret_cast<char*>(&from_) - reinterpret_cast<char*>(this)),
-      0, static_cast<size_t>(reinterpret_cast<char*>(&to_) -
+  ::memset(&from_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&to_) -
       reinterpret_cast<char*>(&from_)) + sizeof(to_));
 }
 
@@ -140,7 +142,7 @@ void Message::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty();
+  data_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::memset(&from_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&to_) -
       reinterpret_cast<char*>(&from_)) + sizeof(to_));
@@ -149,6 +151,7 @@ void Message::Clear() {
 
 const char* Message::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);

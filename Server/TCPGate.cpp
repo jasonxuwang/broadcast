@@ -166,7 +166,6 @@ void TCPGate::poll(){
                     //         std::cout << "[gate]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
                     // }
                     // m_Serializer.reset();
-            }
 
 
             }else{ //不是client也不是server
