@@ -65,6 +65,7 @@ void TCPClient::poll(){
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_recvbuf, '\0', BUFFSIZE);
                 gets(m_recvbuf); // TODO: switch to a safer approach
+        
 
                 // if user input some data
                 if (strlen(m_recvbuf) > 0 ){
@@ -78,6 +79,15 @@ void TCPClient::poll(){
                         memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
                         //int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t)); // 粘包测试
+
+
+                        std::cout << "below info to be sent:\n";
+                        for (int i = 0; i < 256; i++){
+                            printf("%x ", m_sendbuf[i]);
+                            // std::cout << m_sendbuf[i];
+                        }
+                         std::cout << "\n";
+
 
                         // send to server
                         send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0); 
