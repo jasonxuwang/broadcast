@@ -139,12 +139,6 @@ void TCPGate::poll(){
                 if ( recv(m_epoll_event->data.fd, m_clients[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
 
                         //打印看看收到了什么. 这里正常收到
-                        std::cout << "recved: recv_buf \n\n";
-                        for (int i = 0; i < 256; i++){
-                            printf("%x ",  m_clients[m_epoll_event->data.fd].m_recvbuf[i]);
-                            
-                        }
-                         std::cout << "\n\n";
 
                         int32_t tMessageLength;
                         Message tMessage;
@@ -171,16 +165,6 @@ void TCPGate::poll(){
                             // set the server's send buffer
                             tMessageLength = m_Serializer.serialize(tMessage, m_servers[tTargetServerFd].m_sendbuf);
                             // send to server the client's message
-
-
-                        // 打印看看发送了什么. 
-                            std::cout << "to send: send_buf \n\n";
-                            for (int i = 0; i < 256; i++){
-                                printf("%x ",  m_servers[tTargetServerFd].m_sendbuf[i]);
-                                
-                            }
-                            std::cout << "\n\n";
-
                             send(tTargetServerFd, m_servers[tTargetServerFd].m_sendbuf, (tMessageLength + sizeof(int32_t)), 0);
 
                         }
@@ -228,10 +212,6 @@ void TCPGate::poll(){
             			        fprintf(stderr,"[gates] Sent to: %d\n", iter->first);
         				        iter++;
                             }
-
-
-
-
                         }
                     }
                     m_Serializer.reset();

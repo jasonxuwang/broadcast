@@ -56,7 +56,7 @@ void TCPClient::poll(){
                 m_Serializer.read(m_recvbuf, BUFFSIZE);
                 while(m_Serializer.deserialize() > 0){
                     m_id = m_Serializer.m_Message.to();
-                    std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
+                    std::cout << "[client from " << m_Serializer.m_Message.from() <<  "] "<< m_Serializer.m_Message.data() <<"\n";
                 }
                 m_Serializer.reset();
             }
@@ -79,14 +79,6 @@ void TCPClient::poll(){
                         memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
                         //int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t)); // 粘包测试
-
-
-                        std::cout << "below info to be sent:\n";
-                        for (int i = 0; i < 256; i++){
-                            printf("%x ", m_sendbuf[i]);
-                            // std::cout << m_sendbuf[i];
-                        }
-                         std::cout << "\n";
 
 
                         // send to server
