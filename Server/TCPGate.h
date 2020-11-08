@@ -38,7 +38,7 @@ class TCPGate{
         void init();
         void poll();
         void connect_servers(std::string conf_path);
-
+        int32_t assign_server(int32_t tClientId);
 
     private:
 
@@ -54,7 +54,7 @@ class TCPGate{
         struct epoll_event * m_epoll_event; 
         std::map<int32_t, Clients> m_clients;
         std::map<int32_t, Servers> m_servers;
-        ServerInfo serverInfos[2] = {[0]=ServerInfo("127.0.0.1", 10009),[1]=ServerInfo("127.0.0.1", 10010)};
+        ServerInfo serverInfos[2] = {[0]=ServerInfo("127.0.0.1", 10011),[1]=ServerInfo("127.0.0.1", 10012)};
         Serializer m_Serializer;
         Logger m_Logger;
 
