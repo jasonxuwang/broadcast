@@ -98,7 +98,7 @@ void TCPServer::poll(){
                     //std::vector <std::string> string_list;
                     std::string tempstr;
                     int strlength ;
-                    while (std::getline(wholestring, tempstr, "A" )){
+                    while (getline(wholestring, tempstr, "A" )){
                         // 把tempstr中的东西发送
                         strlength = tempstr.length();
                         // const char tempchar = tempstr.;
