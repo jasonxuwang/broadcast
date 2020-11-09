@@ -46,19 +46,20 @@ void TCPClient::poll(){
     for (n=0; n<numfd;n++){
         m_epoll_event = m_epoll.get_event_by_id(n); // get event id
 
-        // if there is a message from server, update my id.
+        // if there is a message from server, print out 
         if (m_epoll_event->data.fd == m_TCPSocket.get_socket_fd()){
-
+            
             memset(m_recvbuf, '\0', BUFFSIZE); // clear receive buffer
-
             // server tell me my id, update.
             if (recv(m_epoll_event->data.fd, m_recvbuf, BUFFSIZE,0) != 0){
-                m_Serializer.read(m_recvbuf, BUFFSIZE);
-                while(m_Serializer.deserialize() > 0){
-                    m_id = m_Serializer.m_Message.to();
-                    std::cout << "[client from " << m_Serializer.m_Message.from() <<  "] "<< m_Serializer.m_Message.data() <<"\n";
-                }
-                m_Serializer.reset();
+
+                std::cout << "Message from server: " << m_recvbuf << std::endl;
+                // m_Serializer.read(m_recvbuf, BUFFSIZE);
+                // while(m_Serializer.deserialize() > 0){
+                //     m_id = m_Serializer.m_Message.to();
+                //     std::cout << "[client from " << m_Serializer.m_Message.from() <<  "] "<< m_Serializer.m_Message.data() <<"\n";
+                // }
+                // m_Serializer.reset();
             }else{
                 perror("tcp server down");
                 exit(EXIT_FAILURE);
@@ -73,22 +74,22 @@ void TCPClient::poll(){
                 // if user input some data
                 if (strlen(m_recvbuf) > 0 ){
                         // construct message  
-                        Message iMessage;
-                        iMessage.set_data(std::string(m_recvbuf));
-                        iMessage.set_to(0);
-                        iMessage.set_from(m_id);
+                        // Message iMessage;
+                        // iMessage.set_data(std::string(m_recvbuf));
+                        // iMessage.set_to(0);
+                        // iMessage.set_from(m_id);
 
-                        // serialize to m_sendbuf
-                        memset(m_sendbuf, '\0', BUFFSIZE);
-                        int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
-                        //int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t)); // 粘包测试
+                        // // serialize to m_sendbuf
+                        // memset(m_sendbuf, '\0', BUFFSIZE);
+                        // int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
+                        // //int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t)); // 粘包测试
 
 
                         // send to server
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0); 
+                        std::cout << "Send to server : " << m_recvbuf << std::endl;
+                         send(m_TCPSocket.get_socket_fd(), m_recvbuf, BUFFSIZE ,0); 
+                        // send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0); 
                         //send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + iMessageLength2 + sizeof(int32_t)+ sizeof(int32_t) ,0);// 粘包测试
-        
-
                 }
 
         }else{
