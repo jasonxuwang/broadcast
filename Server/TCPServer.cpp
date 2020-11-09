@@ -68,12 +68,13 @@ void TCPServer::poll(){
                 }
                 
                 // tell client he/she is connected and he/she's id;
-                Message iMessage;
-                iMessage.set_to(conn_sock);
-                iMessage.set_from(-1);
-                iMessage.set_data("You are connected, your id is: " + std::to_string(conn_sock));
-                int iMessageLength = m_Serializer.serialize(iMessage, m_user_map[conn_sock].m_sendbuf);
-                send(conn_sock,  m_user_map[conn_sock].m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+                // Message iMessage;
+                // iMessage.set_to(conn_sock);
+                // iMessage.set_from(-1);
+                // iMessage.set_data("You are connected, your id is: " + std::to_string(conn_sock));
+                // int iMessageLength = m_Serializer.serialize(iMessage, m_user_map[conn_sock].m_sendbuf);
+                // send(conn_sock,  m_user_map[conn_sock].m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
+                //send(conn_sock,  m_user_map[conn_sock].m_sendbuf, (iMessageLength + sizeof(int32_t)), 0);
         
 		// if this is an incoming message from existing connection
 		}else{
