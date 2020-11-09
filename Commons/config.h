@@ -24,7 +24,10 @@
 #include <sys/epoll.h>
 #include <map>
 #include <iostream>
+#include <vector>
 #include <fstream>
+#include <sstream>
+#include <string>
 
 
 

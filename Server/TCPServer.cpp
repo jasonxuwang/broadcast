@@ -85,8 +85,7 @@ void TCPServer::poll(){
                 // if read someting from kernel.
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
                     std::cout << "Message recved: " << m_user_map[m_epoll_event->data.fd].m_recvbuf << std::endl;
-                    send(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE ,0); 
-                    // std::map<int32_t, User>::iterator iter;
+                     // std::map<int32_t, User>::iterator iter;
                     // int32_t iMessageLength;
                     // Message iMessage;
 
@@ -94,6 +93,20 @@ void TCPServer::poll(){
                     //m_Serializer.read(m_user_map[m_epoll_event->data.fd].m_recvbuf, BUFFSIZE);
 
                     // deal with 粘包
+                    // 沾包处理
+                    std::stringstream wholestring(m_user_map[m_epoll_event->data.fd].m_recvbuf);
+                    //std::vector <std::string> string_list;
+                    std::string tempstr;
+                    int strlength ;
+                    while (std::getline(wholestring, tempstr, "A" )){
+                        // 把tempstr中的东西发送
+                        strlength = tempstr.length();
+                        // const char tempchar = tempstr.;
+                        memset(m_user_map[m_epoll_event->data.fd].m_sendbuf, '\0', BUFFSIZE);
+                        strcpy(m_user_map[m_epoll_event->data.fd].m_sendbuf , tempstr.c_str());
+                        send(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_sendbuf, BUFFSIZE ,0);               
+                    }
+
                     // if the serializer can decode message object from the buffer
                     //while(m_Serializer.deserialize() > 0){
                         // std::cout << "[server]  Message From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
