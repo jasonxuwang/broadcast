@@ -4,8 +4,6 @@
 
 #include <stdint.h>
 
-#define BUFSIZE 1024
-
 
 #include "../Protobuf/message.pb.h"
 #include "../Commons/utils.h"
@@ -23,7 +21,7 @@ class Serializer{
 
         //
         Message m_Message;
-        char m_buffer[BUFSIZE];
+        char m_buffer[BUFFSIZE];
         int32_t read(char* iBuffer, int32_t iSize);
         int32_t serialize(Message iMessage, char* iBuffer); // parse a message from the current buffer, set the message member;
         int32_t deserialize(); // 

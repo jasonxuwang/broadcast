@@ -12,12 +12,11 @@ int32_t Serializer::encode_int32(char *iBuff,  int32_t iMessageLength) {
 }
 
 int32_t Serializer::decode_int32(char *iBuff) {
-    int num = 0;
-    for (int i=0;i<4;i++){
-        num<<8;
-        num |= iBuff[i];
-    }
-    return num;
+    int32_t a = int32_t ((unsigned char)(iBuff[0]) << 24 |
+            (unsigned char)(iBuff[1]) << 16 |
+            (unsigned char)(iBuff[2]) << 8 |
+            (unsigned char)(iBuff[3]));
+    return a;
 }
 
 Serializer::Serializer(){
@@ -41,7 +40,7 @@ int32_t Serializer::read(char* iBuffer, int32_t iSize){
 
 
 void Serializer::reset(){
-    memset(m_buffer, '\0', BUFSIZE);     // empty buffer first 
+    memset(m_buffer, '\0', BUFFSIZE);     // empty buffer first 
     m_MessageLength = 0;
     m_offset = 0;
 }
@@ -54,7 +53,7 @@ int32_t Serializer::serialize(Message iMessage, char* iBuffer){
     int32_t tMessageLength = iMessage.ByteSizeLong();
 
     //长度复制到buffer首部
-    encode_int32(iBuffer,tMessageLength );
+    encode_int32(iBuffer,tMessageLength);
 
     // serailize message对象
     iMessage.SerializeToArray(iBuffer+sizeof(int32_t), tMessageLength); // 长度放到buffer中

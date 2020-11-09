@@ -1,15 +1,5 @@
 #include "TCPClient.h"
 
-
-#define PORT 10009
-#define TIMEOUT 1000
-#define MAXEVENT 100
-#define BUFFSIZE 1024
-#define IPSTR "127.0.0.1"
-
-
-
-
 // An implementation of TCP client
 TCPClient::TCPClient(){
 
@@ -27,8 +17,8 @@ TCPClient::~TCPClient(){
         1 socket file descriptor of connection with server.
         2 stdin (user input).
 */
-void TCPClient::init(){
-    m_TCPSocket.as_client(IPSTR,PORT);
+void TCPClient::init(char* ipstr,int32_t port){
+    m_TCPSocket.as_client(ipstr,port);
     m_epoll_fd  = m_epoll.epoll_init(TIMEOUT,MAXEVENT);
     m_epoll.epoll_add(m_TCPSocket.get_socket_fd());
     m_epoll.epoll_add(STDIN_FILENO);
@@ -66,7 +56,7 @@ void TCPClient::poll(){
                 m_Serializer.read(m_recvbuf, BUFFSIZE);
                 while(m_Serializer.deserialize() > 0){
                     m_id = m_Serializer.m_Message.to();
-                    std::cout << "[client]  From " << m_Serializer.m_Message.from() <<  ": "<< m_Serializer.m_Message.data() <<"\n";
+                    std::cout << "[client from " << m_Serializer.m_Message.from() <<  "] "<< m_Serializer.m_Message.data() <<"\n";
                 }
                 m_Serializer.reset();
             }
@@ -75,6 +65,7 @@ void TCPClient::poll(){
         }else if(m_epoll_event->data.fd == STDIN_FILENO){
                 memset(m_recvbuf, '\0', BUFFSIZE);
                 gets(m_recvbuf); // TODO: switch to a safer approach
+        
 
                 // if user input some data
                 if (strlen(m_recvbuf) > 0 ){
@@ -85,10 +76,16 @@ void TCPClient::poll(){
                         iMessage.set_from(m_id);
 
                         // serialize to m_sendbuf
+                        memset(m_sendbuf, '\0', BUFFSIZE);
                         int32_t iMessageLength = m_Serializer.serialize(iMessage, m_sendbuf);
+                        //int32_t iMessageLength2 = m_Serializer.serialize(iMessage, m_sendbuf+iMessageLength+sizeof(int32_t)); // 粘包测试
+
 
                         // send to server
-                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0);
+                        send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + sizeof(int32_t) ,0); 
+                        //send(m_TCPSocket.get_socket_fd(), m_sendbuf, iMessageLength + iMessageLength2 + sizeof(int32_t)+ sizeof(int32_t) ,0);// 粘包测试
+        
+
                 }
 
         }else{

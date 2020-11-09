@@ -3,7 +3,6 @@
 #include "../Commons/utils.h"
 #include "../Commons/Serializer.h"
 
-#define BUFSIZE 1024
 
 struct User{
 	int32_t id;
@@ -16,7 +15,7 @@ class TCPClient{
     public:
         TCPClient();
         ~TCPClient();
-        void init();
+        void init(char* ipstr,int32_t port);
         void poll();
         void run();
     private:
@@ -26,8 +25,8 @@ class TCPClient{
 
     private:
         int32_t m_id;
-        char m_sendbuf[BUFSIZE];
-        char m_recvbuf[BUFSIZE];
+        char m_sendbuf[BUFFSIZE];
+        char m_recvbuf[BUFFSIZE];
         TCPSocket m_TCPSocket;
         Serializer m_Serializer;
         Epoll m_epoll;
