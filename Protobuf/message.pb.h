@@ -25,7 +25,6 @@
 #include <google/protobuf/arenastring.h>
 #include <google/protobuf/generated_message_table_driven.h>
 #include <google/protobuf/generated_message_util.h>
-#include <google/protobuf/inlined_string_field.h>
 #include <google/protobuf/metadata_lite.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/message.h>
@@ -99,7 +98,6 @@ class Message PROTOBUF_FINAL :
   }
   static const Message& default_instance();
 
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
   static inline const Message* internal_default_instance() {
     return reinterpret_cast<const Message*>(
                &_Message_default_instance_);
@@ -280,7 +278,7 @@ inline void Message::set_to(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // string data = 3;
 inline void Message::clear_data() {
-  data_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  data_.ClearToEmpty();
 }
 inline const std::string& Message::data() const {
   // @@protoc_insertion_point(field_get:Message.data)
@@ -299,31 +297,30 @@ inline const std::string& Message::_internal_data() const {
 }
 inline void Message::_internal_set_data(const std::string& value) {
   
-  data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
 inline void Message::set_data(std::string&& value) {
   
   data_.Set(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
   // @@protoc_insertion_point(field_set_rvalue:Message.data)
 }
 inline void Message::set_data(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
-  data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-              GetArena());
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
   // @@protoc_insertion_point(field_set_char:Message.data)
 }
 inline void Message::set_data(const char* value,
     size_t size) {
   
-  data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
   // @@protoc_insertion_point(field_set_pointer:Message.data)
 }
 inline std::string* Message::_internal_mutable_data() {
   
-  return data_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
 inline std::string* Message::release_data() {
   // @@protoc_insertion_point(field_release:Message.data)

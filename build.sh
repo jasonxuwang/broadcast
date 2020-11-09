@@ -1,10 +1,9 @@
 # git pull
 # sleep 1
 
-
-# cd ./Protobuf
-# protoc --cpp_out=./ message.proto
-# cd ..
+cd ./Protobuf
+protoc --cpp_out=./ message.proto
+cd ..
 
 #export LD_LIBRARY_PATH=/usr/local/lib
 #export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
