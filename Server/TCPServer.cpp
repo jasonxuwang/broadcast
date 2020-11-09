@@ -104,6 +104,8 @@ void TCPServer::poll(){
                         // const char tempchar = tempstr.;
                         memset(m_user_map[m_epoll_event->data.fd].m_sendbuf, '\0', BUFFSIZE);
                         strcpy(m_user_map[m_epoll_event->data.fd].m_sendbuf , tempstr.c_str());
+                        std::cout << "Message SENT: " << m_user_map[m_epoll_event->data.fd].m_sendbuf << std::endl;
+                    
                         send(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_sendbuf, BUFFSIZE ,0);               
                     }
 
