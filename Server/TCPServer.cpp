@@ -100,6 +100,8 @@ void TCPServer::poll(){
                         // 广播
                         iter = m_user_map.begin();
     				    while(iter != m_user_map.end()) {
+                            std::cout << "Message sent: " << iter->first << std::endl;
+                   
                             memset(iter->second.m_sendbuf, '\0', BUFFSIZE);
                             memcpy(iter->second.m_sendbuf, token, strlen(token));
                             // 为sendbuf最后加上一个“ A”
