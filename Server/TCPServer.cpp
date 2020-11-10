@@ -85,7 +85,7 @@ void TCPServer::poll(){
                 // if read someting from kernel.
 				if ( recv(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_recvbuf,BUFFSIZE,0) != 0) {
                     std::cout << "Message recved: " << m_user_map[m_epoll_event->data.fd].m_recvbuf << std::endl;
-                     // std::map<int32_t, User>::iterator iter;
+                     std::map<int32_t, User>::iterator iter;
                     // int32_t iMessageLength;
                     // Message iMessage;
 
@@ -97,12 +97,17 @@ void TCPServer::poll(){
 
                     char * token = strtok(m_user_map[m_epoll_event->data.fd].m_recvbuf, "A");
                     while (token != NULL){
-                        
-                        memset(m_user_map[m_epoll_event->data.fd].m_sendbuf, '\0', BUFFSIZE);
-                        memcpy(m_user_map[m_epoll_event->data.fd].m_sendbuf, token, strlen(token));
-                        //printf("parsed: %s   strlen= %d\n", token, strlen(token));
-                        //memset(m_user_map[m_epoll_event->data.fd].m_sendbuf, '\0', BUFFSIZE);
-                        send(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_sendbuf, BUFFSIZE, 0);
+                        // 广播
+                        iter = m_user_map.begin();
+    				    while(iter != m_user_map.end()) {
+                            memset(iter->second.m_sendbuf, '\0', BUFFSIZE);
+                            memcpy(iter->second.m_sendbuf, token, strlen(token));
+                            // 为sendbuf最后加上一个“ A”
+                            strcat(iter->second.m_sendbuf, " A");
+                            send(iter->first,iter->second.m_sendbuf, BUFFSIZE, 0);
+                            iter++; 
+                        }
+                        //
                         token = strtok(NULL, "A");
                     }
 
