@@ -94,20 +94,32 @@ void TCPServer::poll(){
 
                     // deal with 粘包
                     // 沾包处理
-                    std::stringstream wholestring(m_user_map[m_epoll_event->data.fd].m_recvbuf);
-                    //std::vector <std::string> string_list;
-                    std::string tempstr;
-                    int strlength ;
-                    while (getline(wholestring, tempstr, "A" )){
-                        // 把tempstr中的东西发送
-                        strlength = tempstr.length();
-                        // const char tempchar = tempstr.;
+
+                    char * token = strtok(m_user_map[m_epoll_event->data.fd].m_recvbuf, "A");
+                    while (token != NULL){
+                        
                         memset(m_user_map[m_epoll_event->data.fd].m_sendbuf, '\0', BUFFSIZE);
-                        strcpy(m_user_map[m_epoll_event->data.fd].m_sendbuf , tempstr.c_str());
-                        std::cout << "Message SENT: " << m_user_map[m_epoll_event->data.fd].m_sendbuf << std::endl;
-                    
-                        send(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_sendbuf, BUFFSIZE ,0);               
+                        memcpy(m_user_map[m_epoll_event->data.fd].m_sendbuf, token, strlen(token));
+                        //printf("parsed: %s   strlen= %d\n", token, strlen(token));
+                        //memset(m_user_map[m_epoll_event->data.fd].m_sendbuf, '\0', BUFFSIZE);
+                        send(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_sendbuf, BUFFSIZE, 0);
+                        token = strtok(NULL, "A");
                     }
+
+                    // std::stringstream wholestring(string(m_user_map[m_epoll_event->data.fd].m_recvbuf));
+                    // //std::vector <std::string> string_list;
+                    // std::string tempstr;
+                    // int strlength ;
+                    // while (std::getline(wholestring, tempstr, "A" )){
+                    //     // 把tempstr中的东西发送
+                    //     strlength = tempstr.length();
+                    //     // const char tempchar = tempstr.;
+                    //     memset(m_user_map[m_epoll_event->data.fd].m_sendbuf, '\0', BUFFSIZE);
+                    //     strcpy(m_user_map[m_epoll_event->data.fd].m_sendbuf , tempstr.c_str());
+                    //     std::cout << "Message SENT: " << m_user_map[m_epoll_event->data.fd].m_sendbuf << std::endl;
+                    
+                    //     send(m_epoll_event->data.fd, m_user_map[m_epoll_event->data.fd].m_sendbuf, BUFFSIZE ,0);               
+                    // }
 
                     // if the serializer can decode message object from the buffer
                     //while(m_Serializer.deserialize() > 0){
