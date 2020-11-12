@@ -30,8 +30,8 @@
 
 #include "Epoll.h"
 #include "TCPSocket.h"
-#include "../Protobuf/message.pb.h"
-#include "Logger.h"
+#include "../Protobuf/Status.pb.h"
+
 
 
 #define IPSTR "127.0.0.1"

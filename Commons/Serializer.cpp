@@ -48,7 +48,7 @@ void Serializer::reset(){
 /**
  * 把输入的iMessage对象，按 长度(4Bytes) | Message Body 格式复制到给定字符数组中
 */
-int32_t Serializer::serialize(Message iMessage, char* iBuffer){
+int32_t Serializer::serialize(Status iMessage, char* iBuffer){
     // 先计算长度
     int32_t tMessageLength = iMessage.ByteSizeLong();
 
@@ -83,6 +83,7 @@ int32_t Serializer::deserialize(){
         reset();
         return -1;
     }
+
     m_offset += m_MessageLength;
     return 1;
    

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message Status{
+    int32 id =1;
+    int32 role = 2;
+    int32 status =3;
+    float posx =4;
+    float posy =5;
+    float posz =6;
+    float facex =7;
+    float facey =8;
+    float facez =9;
+    int64 timestamp = 10;
+}
+
