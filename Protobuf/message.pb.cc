@@ -42,9 +42,16 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_message_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::Message, from_),
-  PROTOBUF_FIELD_OFFSET(::Message, to_),
-  PROTOBUF_FIELD_OFFSET(::Message, data_),
+  PROTOBUF_FIELD_OFFSET(::Message, id_),
+  PROTOBUF_FIELD_OFFSET(::Message, status_),
+  PROTOBUF_FIELD_OFFSET(::Message, role_),
+  PROTOBUF_FIELD_OFFSET(::Message, posx_),
+  PROTOBUF_FIELD_OFFSET(::Message, posy_),
+  PROTOBUF_FIELD_OFFSET(::Message, posz_),
+  PROTOBUF_FIELD_OFFSET(::Message, facex_),
+  PROTOBUF_FIELD_OFFSET(::Message, facey_),
+  PROTOBUF_FIELD_OFFSET(::Message, facez_),
+  PROTOBUF_FIELD_OFFSET(::Message, timestamp_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::Message)},
@@ -55,8 +62,11 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rmessage.proto\"1\n\007Message\022\014\n\004from\030\001 \001(\005"
-  "\022\n\n\002to\030\002 \001(\005\022\014\n\004data\030\003 \001(\tb\006proto3"
+  "\n\rmessage.proto\"\235\001\n\007Message\022\n\n\002id\030\001 \001(\005\022"
+  "\016\n\006status\030\002 \001(\005\022\014\n\004role\030\003 \001(\005\022\014\n\004posx\030\004 "
+  "\001(\002\022\014\n\004posy\030\005 \001(\002\022\014\n\004posz\030\006 \001(\002\022\r\n\005facex"
+  "\030\007 \001(\002\022\r\n\005facey\030\010 \001(\002\022\r\n\005facez\030\t \001(\002\022\021\n\t"
+  "timestamp\030\n \001(\003b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_message_2eproto_deps[1] = {
 };
@@ -65,7 +75,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mes
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_message_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_message_2eproto = {
-  false, false, descriptor_table_protodef_message_2eproto, "message.proto", 74,
+  false, false, descriptor_table_protodef_message_2eproto, "message.proto", 183,
   &descriptor_table_message_2eproto_once, descriptor_table_message_2eproto_sccs, descriptor_table_message_2eproto_deps, 1, 0,
   schemas, file_default_instances, TableStruct_message_2eproto::offsets,
   file_level_metadata_message_2eproto, 1, file_level_enum_descriptors_message_2eproto, file_level_service_descriptors_message_2eproto,
@@ -91,23 +101,16 @@ Message::Message(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 Message::Message(const Message& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_data().empty()) {
-    data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_data(),
-      GetArena());
-  }
-  ::memcpy(&from_, &from.from_,
-    static_cast<size_t>(reinterpret_cast<char*>(&to_) -
-    reinterpret_cast<char*>(&from_)) + sizeof(to_));
+  ::memcpy(&id_, &from.id_,
+    static_cast<size_t>(reinterpret_cast<char*>(&facez_) -
+    reinterpret_cast<char*>(&id_)) + sizeof(facez_));
   // @@protoc_insertion_point(copy_constructor:Message)
 }
 
 void Message::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Message_message_2eproto.base);
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&from_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&to_) -
-      reinterpret_cast<char*>(&from_)) + sizeof(to_));
+  ::memset(&id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&facez_) -
+      reinterpret_cast<char*>(&id_)) + sizeof(facez_));
 }
 
 Message::~Message() {
@@ -118,7 +121,6 @@ Message::~Message() {
 
 void Message::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Message::ArenaDtor(void* object) {
@@ -142,10 +144,9 @@ void Message::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  ::memset(&from_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&to_) -
-      reinterpret_cast<char*>(&from_)) + sizeof(to_));
+  ::memset(&id_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&facez_) -
+      reinterpret_cast<char*>(&id_)) + sizeof(facez_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -157,26 +158,73 @@ const char* Message::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // int32 from = 1;
+      // int32 id = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          from_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 to = 2;
+      // int32 status = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          to_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string data = 3;
+      // int32 role = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          auto str = _internal_mutable_data();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Message.data"));
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          role_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // float posx = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          posx_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float posy = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+          posy_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float posz = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
+          posz_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float facex = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 61)) {
+          facex_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float facey = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 69)) {
+          facey_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // float facez = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 77)) {
+          facez_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
+      // int64 timestamp = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+          timestamp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -208,26 +256,64 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 from = 1;
-  if (this->from() != 0) {
+  // int32 id = 1;
+  if (this->id() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_from(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_id(), target);
   }
 
-  // int32 to = 2;
-  if (this->to() != 0) {
+  // int32 status = 2;
+  if (this->status() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_to(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_status(), target);
   }
 
-  // string data = 3;
-  if (this->data().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Message.data");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_data(), target);
+  // int32 role = 3;
+  if (this->role() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_role(), target);
+  }
+
+  // float posx = 4;
+  if (!(this->posx() <= 0 && this->posx() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_posx(), target);
+  }
+
+  // float posy = 5;
+  if (!(this->posy() <= 0 && this->posy() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_posy(), target);
+  }
+
+  // float posz = 6;
+  if (!(this->posz() <= 0 && this->posz() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_posz(), target);
+  }
+
+  // float facex = 7;
+  if (!(this->facex() <= 0 && this->facex() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(7, this->_internal_facex(), target);
+  }
+
+  // float facey = 8;
+  if (!(this->facey() <= 0 && this->facey() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(8, this->_internal_facey(), target);
+  }
+
+  // float facez = 9;
+  if (!(this->facez() <= 0 && this->facez() >= 0)) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(9, this->_internal_facez(), target);
+  }
+
+  // int64 timestamp = 10;
+  if (this->timestamp() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(10, this->_internal_timestamp(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -246,25 +332,62 @@ size_t Message::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 3;
-  if (this->data().size() > 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
-  }
-
-  // int32 from = 1;
-  if (this->from() != 0) {
+  // int32 id = 1;
+  if (this->id() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_from());
+        this->_internal_id());
   }
 
-  // int32 to = 2;
-  if (this->to() != 0) {
+  // int32 status = 2;
+  if (this->status() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_to());
+        this->_internal_status());
+  }
+
+  // int32 role = 3;
+  if (this->role() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_role());
+  }
+
+  // float posx = 4;
+  if (!(this->posx() <= 0 && this->posx() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float posy = 5;
+  if (!(this->posy() <= 0 && this->posy() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float posz = 6;
+  if (!(this->posz() <= 0 && this->posz() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float facex = 7;
+  if (!(this->facex() <= 0 && this->facex() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // float facey = 8;
+  if (!(this->facey() <= 0 && this->facey() >= 0)) {
+    total_size += 1 + 4;
+  }
+
+  // int64 timestamp = 10;
+  if (this->timestamp() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
+        this->_internal_timestamp());
+  }
+
+  // float facez = 9;
+  if (!(this->facez() <= 0 && this->facez() >= 0)) {
+    total_size += 1 + 4;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -298,14 +421,35 @@ void Message::MergeFrom(const Message& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.data().size() > 0) {
-    _internal_set_data(from._internal_data());
+  if (from.id() != 0) {
+    _internal_set_id(from._internal_id());
   }
-  if (from.from() != 0) {
-    _internal_set_from(from._internal_from());
+  if (from.status() != 0) {
+    _internal_set_status(from._internal_status());
   }
-  if (from.to() != 0) {
-    _internal_set_to(from._internal_to());
+  if (from.role() != 0) {
+    _internal_set_role(from._internal_role());
+  }
+  if (!(from.posx() <= 0 && from.posx() >= 0)) {
+    _internal_set_posx(from._internal_posx());
+  }
+  if (!(from.posy() <= 0 && from.posy() >= 0)) {
+    _internal_set_posy(from._internal_posy());
+  }
+  if (!(from.posz() <= 0 && from.posz() >= 0)) {
+    _internal_set_posz(from._internal_posz());
+  }
+  if (!(from.facex() <= 0 && from.facex() >= 0)) {
+    _internal_set_facex(from._internal_facex());
+  }
+  if (!(from.facey() <= 0 && from.facey() >= 0)) {
+    _internal_set_facey(from._internal_facey());
+  }
+  if (from.timestamp() != 0) {
+    _internal_set_timestamp(from._internal_timestamp());
+  }
+  if (!(from.facez() <= 0 && from.facez() >= 0)) {
+    _internal_set_facez(from._internal_facez());
   }
 }
 
@@ -330,13 +474,12 @@ bool Message::IsInitialized() const {
 void Message::InternalSwap(Message* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  data_.Swap(&other->data_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Message, to_)
-      + sizeof(Message::to_)
-      - PROTOBUF_FIELD_OFFSET(Message, from_)>(
-          reinterpret_cast<char*>(&from_),
-          reinterpret_cast<char*>(&other->from_));
+      PROTOBUF_FIELD_OFFSET(Message, facez_)
+      + sizeof(Message::facez_)
+      - PROTOBUF_FIELD_OFFSET(Message, id_)>(
+          reinterpret_cast<char*>(&id_),
+          reinterpret_cast<char*>(&other->id_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Message::GetMetadata() const {

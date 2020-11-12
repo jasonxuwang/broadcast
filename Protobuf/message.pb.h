@@ -176,42 +176,105 @@ class Message PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDataFieldNumber = 3,
-    kFromFieldNumber = 1,
-    kToFieldNumber = 2,
+    kIdFieldNumber = 1,
+    kStatusFieldNumber = 2,
+    kRoleFieldNumber = 3,
+    kPosxFieldNumber = 4,
+    kPosyFieldNumber = 5,
+    kPoszFieldNumber = 6,
+    kFacexFieldNumber = 7,
+    kFaceyFieldNumber = 8,
+    kTimestampFieldNumber = 10,
+    kFacezFieldNumber = 9,
   };
-  // string data = 3;
-  void clear_data();
-  const std::string& data() const;
-  void set_data(const std::string& value);
-  void set_data(std::string&& value);
-  void set_data(const char* value);
-  void set_data(const char* value, size_t size);
-  std::string* mutable_data();
-  std::string* release_data();
-  void set_allocated_data(std::string* data);
+  // int32 id = 1;
+  void clear_id();
+  ::PROTOBUF_NAMESPACE_ID::int32 id() const;
+  void set_id(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  const std::string& _internal_data() const;
-  void _internal_set_data(const std::string& value);
-  std::string* _internal_mutable_data();
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_id() const;
+  void _internal_set_id(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 from = 1;
-  void clear_from();
-  ::PROTOBUF_NAMESPACE_ID::int32 from() const;
-  void set_from(::PROTOBUF_NAMESPACE_ID::int32 value);
+  // int32 status = 2;
+  void clear_status();
+  ::PROTOBUF_NAMESPACE_ID::int32 status() const;
+  void set_status(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_from() const;
-  void _internal_set_from(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_status() const;
+  void _internal_set_status(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 to = 2;
-  void clear_to();
-  ::PROTOBUF_NAMESPACE_ID::int32 to() const;
-  void set_to(::PROTOBUF_NAMESPACE_ID::int32 value);
+  // int32 role = 3;
+  void clear_role();
+  ::PROTOBUF_NAMESPACE_ID::int32 role() const;
+  void set_role(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_to() const;
-  void _internal_set_to(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_role() const;
+  void _internal_set_role(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // float posx = 4;
+  void clear_posx();
+  float posx() const;
+  void set_posx(float value);
+  private:
+  float _internal_posx() const;
+  void _internal_set_posx(float value);
+  public:
+
+  // float posy = 5;
+  void clear_posy();
+  float posy() const;
+  void set_posy(float value);
+  private:
+  float _internal_posy() const;
+  void _internal_set_posy(float value);
+  public:
+
+  // float posz = 6;
+  void clear_posz();
+  float posz() const;
+  void set_posz(float value);
+  private:
+  float _internal_posz() const;
+  void _internal_set_posz(float value);
+  public:
+
+  // float facex = 7;
+  void clear_facex();
+  float facex() const;
+  void set_facex(float value);
+  private:
+  float _internal_facex() const;
+  void _internal_set_facex(float value);
+  public:
+
+  // float facey = 8;
+  void clear_facey();
+  float facey() const;
+  void set_facey(float value);
+  private:
+  float _internal_facey() const;
+  void _internal_set_facey(float value);
+  public:
+
+  // int64 timestamp = 10;
+  void clear_timestamp();
+  ::PROTOBUF_NAMESPACE_ID::int64 timestamp() const;
+  void set_timestamp(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_timestamp() const;
+  void _internal_set_timestamp(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // float facez = 9;
+  void clear_facez();
+  float facez() const;
+  void set_facez(float value);
+  private:
+  float _internal_facez() const;
+  void _internal_set_facez(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:Message)
@@ -221,9 +284,16 @@ class Message PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
-  ::PROTOBUF_NAMESPACE_ID::int32 from_;
-  ::PROTOBUF_NAMESPACE_ID::int32 to_;
+  ::PROTOBUF_NAMESPACE_ID::int32 id_;
+  ::PROTOBUF_NAMESPACE_ID::int32 status_;
+  ::PROTOBUF_NAMESPACE_ID::int32 role_;
+  float posx_;
+  float posy_;
+  float posz_;
+  float facex_;
+  float facey_;
+  ::PROTOBUF_NAMESPACE_ID::int64 timestamp_;
+  float facez_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
@@ -238,106 +308,204 @@ class Message PROTOBUF_FINAL :
 #endif  // __GNUC__
 // Message
 
-// int32 from = 1;
-inline void Message::clear_from() {
-  from_ = 0;
+// int32 id = 1;
+inline void Message::clear_id() {
+  id_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 Message::_internal_from() const {
-  return from_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 Message::_internal_id() const {
+  return id_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 Message::from() const {
-  // @@protoc_insertion_point(field_get:Message.from)
-  return _internal_from();
+inline ::PROTOBUF_NAMESPACE_ID::int32 Message::id() const {
+  // @@protoc_insertion_point(field_get:Message.id)
+  return _internal_id();
 }
-inline void Message::_internal_set_from(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void Message::_internal_set_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  from_ = value;
+  id_ = value;
 }
-inline void Message::set_from(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_from(value);
-  // @@protoc_insertion_point(field_set:Message.from)
+inline void Message::set_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:Message.id)
 }
 
-// int32 to = 2;
-inline void Message::clear_to() {
-  to_ = 0;
+// int32 status = 2;
+inline void Message::clear_status() {
+  status_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 Message::_internal_to() const {
-  return to_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 Message::_internal_status() const {
+  return status_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 Message::to() const {
-  // @@protoc_insertion_point(field_get:Message.to)
-  return _internal_to();
+inline ::PROTOBUF_NAMESPACE_ID::int32 Message::status() const {
+  // @@protoc_insertion_point(field_get:Message.status)
+  return _internal_status();
 }
-inline void Message::_internal_set_to(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void Message::_internal_set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  to_ = value;
+  status_ = value;
 }
-inline void Message::set_to(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_to(value);
-  // @@protoc_insertion_point(field_set:Message.to)
+inline void Message::set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:Message.status)
 }
 
-// string data = 3;
-inline void Message::clear_data() {
-  data_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+// int32 role = 3;
+inline void Message::clear_role() {
+  role_ = 0;
 }
-inline const std::string& Message::data() const {
-  // @@protoc_insertion_point(field_get:Message.data)
-  return _internal_data();
+inline ::PROTOBUF_NAMESPACE_ID::int32 Message::_internal_role() const {
+  return role_;
 }
-inline void Message::set_data(const std::string& value) {
-  _internal_set_data(value);
-  // @@protoc_insertion_point(field_set:Message.data)
+inline ::PROTOBUF_NAMESPACE_ID::int32 Message::role() const {
+  // @@protoc_insertion_point(field_get:Message.role)
+  return _internal_role();
 }
-inline std::string* Message::mutable_data() {
-  // @@protoc_insertion_point(field_mutable:Message.data)
-  return _internal_mutable_data();
-}
-inline const std::string& Message::_internal_data() const {
-  return data_.Get();
-}
-inline void Message::_internal_set_data(const std::string& value) {
+inline void Message::_internal_set_role(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  role_ = value;
 }
-inline void Message::set_data(std::string&& value) {
+inline void Message::set_role(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_role(value);
+  // @@protoc_insertion_point(field_set:Message.role)
+}
+
+// float posx = 4;
+inline void Message::clear_posx() {
+  posx_ = 0;
+}
+inline float Message::_internal_posx() const {
+  return posx_;
+}
+inline float Message::posx() const {
+  // @@protoc_insertion_point(field_get:Message.posx)
+  return _internal_posx();
+}
+inline void Message::_internal_set_posx(float value) {
   
-  data_.Set(
-    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:Message.data)
+  posx_ = value;
 }
-inline void Message::set_data(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
+inline void Message::set_posx(float value) {
+  _internal_set_posx(value);
+  // @@protoc_insertion_point(field_set:Message.posx)
+}
+
+// float posy = 5;
+inline void Message::clear_posy() {
+  posy_ = 0;
+}
+inline float Message::_internal_posy() const {
+  return posy_;
+}
+inline float Message::posy() const {
+  // @@protoc_insertion_point(field_get:Message.posy)
+  return _internal_posy();
+}
+inline void Message::_internal_set_posy(float value) {
   
-  data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
-              GetArena());
-  // @@protoc_insertion_point(field_set_char:Message.data)
+  posy_ = value;
 }
-inline void Message::set_data(const char* value,
-    size_t size) {
+inline void Message::set_posy(float value) {
+  _internal_set_posy(value);
+  // @@protoc_insertion_point(field_set:Message.posy)
+}
+
+// float posz = 6;
+inline void Message::clear_posz() {
+  posz_ = 0;
+}
+inline float Message::_internal_posz() const {
+  return posz_;
+}
+inline float Message::posz() const {
+  // @@protoc_insertion_point(field_get:Message.posz)
+  return _internal_posz();
+}
+inline void Message::_internal_set_posz(float value) {
   
-  data_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:Message.data)
+  posz_ = value;
 }
-inline std::string* Message::_internal_mutable_data() {
+inline void Message::set_posz(float value) {
+  _internal_set_posz(value);
+  // @@protoc_insertion_point(field_set:Message.posz)
+}
+
+// float facex = 7;
+inline void Message::clear_facex() {
+  facex_ = 0;
+}
+inline float Message::_internal_facex() const {
+  return facex_;
+}
+inline float Message::facex() const {
+  // @@protoc_insertion_point(field_get:Message.facex)
+  return _internal_facex();
+}
+inline void Message::_internal_set_facex(float value) {
   
-  return data_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  facex_ = value;
 }
-inline std::string* Message::release_data() {
-  // @@protoc_insertion_point(field_release:Message.data)
-  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline void Message::set_facex(float value) {
+  _internal_set_facex(value);
+  // @@protoc_insertion_point(field_set:Message.facex)
 }
-inline void Message::set_allocated_data(std::string* data) {
-  if (data != nullptr) {
-    
-  } else {
-    
-  }
-  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:Message.data)
+
+// float facey = 8;
+inline void Message::clear_facey() {
+  facey_ = 0;
+}
+inline float Message::_internal_facey() const {
+  return facey_;
+}
+inline float Message::facey() const {
+  // @@protoc_insertion_point(field_get:Message.facey)
+  return _internal_facey();
+}
+inline void Message::_internal_set_facey(float value) {
+  
+  facey_ = value;
+}
+inline void Message::set_facey(float value) {
+  _internal_set_facey(value);
+  // @@protoc_insertion_point(field_set:Message.facey)
+}
+
+// float facez = 9;
+inline void Message::clear_facez() {
+  facez_ = 0;
+}
+inline float Message::_internal_facez() const {
+  return facez_;
+}
+inline float Message::facez() const {
+  // @@protoc_insertion_point(field_get:Message.facez)
+  return _internal_facez();
+}
+inline void Message::_internal_set_facez(float value) {
+  
+  facez_ = value;
+}
+inline void Message::set_facez(float value) {
+  _internal_set_facez(value);
+  // @@protoc_insertion_point(field_set:Message.facez)
+}
+
+// int64 timestamp = 10;
+inline void Message::clear_timestamp() {
+  timestamp_ = PROTOBUF_LONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 Message::_internal_timestamp() const {
+  return timestamp_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 Message::timestamp() const {
+  // @@protoc_insertion_point(field_get:Message.timestamp)
+  return _internal_timestamp();
+}
+inline void Message::_internal_set_timestamp(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  
+  timestamp_ = value;
+}
+inline void Message::set_timestamp(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_timestamp(value);
+  // @@protoc_insertion_point(field_set:Message.timestamp)
 }
 
 #ifdef __GNUC__

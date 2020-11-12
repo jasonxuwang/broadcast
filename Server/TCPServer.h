@@ -2,6 +2,7 @@
 #include "../Protobuf/message.pb.h"
 #include "../Commons/utils.h"
 #include "../Commons/Serializer.h"
+#include "../Game/PlayerMgr.h"
 
 struct User{
 	int32_t id;
@@ -34,6 +35,6 @@ class TCPServer{
         std::map<int32_t, User> m_user_map;
         Serializer m_Serializer;
         Logger m_Logger;
-
+        PlayerMgr playerMgr;
         
 };
